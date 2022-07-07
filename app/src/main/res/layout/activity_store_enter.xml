@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ImageButton
+        android:id="@+id/imgbtn_store_enter_back"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintDimensionRatio="1:1"
+        android:scaleType="centerCrop"
+        android:src="@drawable/general_back_arrow"
+        android:background="@color/transparent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:id="@+id/btn_store_enter_make"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.15"
+        android:orientation="vertical"
+        android:drawableLeft="@drawable/store_enter_make_v"
+        android:background="@color/transparent"
+        android:text="@string/store_enter_make"
+        android:textColor="@color/black"
+        >
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_store_enter_online"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        android:orientation="vertical"
+        android:drawableLeft="@drawable/store_enter_online_v"
+        android:background="@color/transparent"
+        android:text="@string/store_enter_online"
+        android:textColor="@color/black"
+        >
+
+    </Button>
+
+    <Button
+        android:id="@+id/btn_store_enter_saved"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintHeight_percent="0.18"
+        app:layout_constraintWidth_percent="0.7"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.85"
+        android:orientation="vertical"
+        android:drawableLeft="@drawable/store_enter_saved_v"
+        android:background="@color/transparent"
+        android:text="@string/store_enter_saved"
+        android:textColor="@color/black"
+        >
+
+    </Button>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
