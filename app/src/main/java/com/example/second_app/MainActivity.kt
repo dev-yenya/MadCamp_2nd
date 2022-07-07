@@ -12,7 +12,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.second_app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
-import com.kakao.sdk.common.util.Utility
+//import com.kakao.sdk.common.util.Utility
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var navigationView: NavigationView
@@ -21,7 +21,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private val binding get() = mBinding!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val toolbar: Toolbar = findViewById(R.id.toolbar) // toolBar를 통해 App Bar 생성
         setSupportActionBar(toolbar) // 툴바 적용
@@ -36,8 +38,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this) //navigation 리스너
 
-        val keyHash = Utility.getKeyHash(this)
-        Log.d("Hash", keyHash)
+//        val keyHash = Utility.getKeyHash(this)
+//        Log.d("Hash", keyHash)
+
+        binding.btnMainStore.setOnClickListener {
+            val intent = Intent(this, StoreEnterActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnMainBaseLevel.setOnClickListener {
+            val intent = Intent(this, BaseLevelsActivity::class.java)
+            startActivity(intent)
+        }
 
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
