@@ -12,7 +12,6 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.second_app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
-//import com.kakao.sdk.common.util.Utility
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var navigationView: NavigationView
@@ -37,9 +36,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // 네비게이션 드로어 내에있는 화면의 이벤트를 처리하기 위해 생성
         navigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this) //navigation 리스너
-
-//        val keyHash = Utility.getKeyHash(this)
-//        Log.d("Hash", keyHash)
 
         binding.btnMainStore.setOnClickListener {
             val intent = Intent(this, StoreEnterActivity::class.java)

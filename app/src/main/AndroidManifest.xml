@@ -29,6 +29,26 @@
             android:name=".StoreEnterActivity">
 
         </activity>
+        <activity
+            android:name=".LevelPlayActivity">
+
+        </activity>
+        <activity
+            android:name=".CreateLevelActivity">
+
+        </activity>
+        <activity
+            android:name=".OnlineLevelsActivity">
+
+        </activity>
+        <activity
+            android:name=".SavedLevelsActivity">
+
+        </activity>
+        <activity
+            android:name=".ViewOnlineLevelActivity">
+
+        </activity>
     </application>
 
 </manifest>
