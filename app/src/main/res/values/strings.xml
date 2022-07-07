@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Second_App</string>
+    <string name="store_enter_make">레벨 만들기</string>
+    <string name="store_enter_online">온라인 스토어 가기</string>
+    <string name="store_enter_saved">저장된 레벨 보기</string>
 </resources>

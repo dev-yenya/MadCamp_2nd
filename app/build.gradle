@@ -4,6 +4,9 @@ plugins {
 }
 
 android {
+    buildFeatures {
+        viewBinding true
+    }
     compileSdk 31
 
     buildFeatures{
@@ -12,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.second_app"
-        minSdk 21
+        minSdk 23
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -37,6 +40,7 @@ android {
 
 dependencies {
 
+    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
