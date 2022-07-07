@@ -2,7 +2,7 @@ package com.example.second_app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.second_app.databinding.ActivityStoreEnterBinding
+import com.example.second_app.databinding.ActivityBaseLevelsBinding
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.json.JSONException
@@ -11,15 +11,15 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 class BaseLevelsActivity: AppCompatActivity() {
-    private var _binding: ActivityStoreEnterBinding? = null
+    private var _binding: ActivityBaseLevelsBinding? = null
     private val binding get() = _binding!!
-    private val baseLevelList: MutableList<LevelInformation> = mutableListOf()
+    private lateinit var baseLevelList: MutableList<LevelInformation>
     private val gson = Gson()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _binding = ActivityStoreEnterBinding.inflate(layoutInflater)
+        _binding = ActivityBaseLevelsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // TODO: RecyclerView 를 활용해서 레벨의 목록을 표시해보자.
@@ -45,11 +45,12 @@ class BaseLevelsActivity: AppCompatActivity() {
             }
             jsonString = stringBuilder.toString()
 
-            val itemType = object : TypeToken<MutableList<String>>() {}.type
-            val data: MutableList<String> = gson.fromJson(jsonString, itemType)
-            for (d in data) {
-                baseLevelList.add(gson.fromJson(d, LevelInformation::class.java))
-            }
+            val itemType = object : TypeToken<MutableList<LevelInformation>>() {}.type
+//            val data: MutableList<String> = gson.fromJson(jsonString, itemType)
+//            for (d in data) {
+//                baseLevelList.add(gson.fromJson(d, LevelInformation::class.java))
+//            }
+            baseLevelList = gson.fromJson(jsonString, itemType)
         }
         catch (e: IOException) {
             e.printStackTrace()
