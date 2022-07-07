@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_make_v.xml" value="0.268" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_online_v.xml" value="0.1965" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_saved_v.xml" value="0.1965" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_base_levels.xml" value="0.20878623188405798" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_level_play.xml" value="0.20878623188405798" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_store_enter.xml" value="0.25" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
