@@ -110,7 +110,7 @@ class SavedLevelsAdapter : RecyclerView.Adapter<SavedLevelsAdapter.MyViewHolder>
     }
     inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(levelData: LevelInformation) {
-            binding.btnLevelListItem.text = levelData.levelName
+            binding.btnLevelListItem.text = levelData.levelname
             val context = binding.btnLevelListItem.context
             binding.btnLevelListItem.setOnClickListener {
                 val intent = Intent(context, LevelPlayActivity::class.java)

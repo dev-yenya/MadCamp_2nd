@@ -7,7 +7,8 @@ import java.io.Serializable
 // DB와 연동할 것을 생각하고 구성해보자.
 
 data class LevelInformation(
-    val levelId: Int,
-    val levelName: String,
+    val id: Int,
+    val levelname: String,
+    val boardsize: Int,
     // 더 추가할 것.
 ): Serializable

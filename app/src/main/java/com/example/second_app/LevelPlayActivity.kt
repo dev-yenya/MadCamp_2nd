@@ -16,6 +16,8 @@ class LevelPlayActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         val levelData = intent.extras!!.getSerializable("level_data") as LevelInformation
-        binding.textLevelPlayA.text = levelData.levelName
+        binding.textLevelPlayA.text = levelData.levelname
+
+
     }
 }

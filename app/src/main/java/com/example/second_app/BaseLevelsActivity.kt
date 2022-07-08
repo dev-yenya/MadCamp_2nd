@@ -55,10 +55,6 @@ class BaseLevelsActivity: AppCompatActivity() {
             jsonString = stringBuilder.toString()
 
             val itemType = object : TypeToken<MutableList<LevelInformation>>() {}.type
-//            val data: MutableList<String> = gson.fromJson(jsonString, itemType)
-//            for (d in data) {
-//                baseLevelList.add(gson.fromJson(d, LevelInformation::class.java))
-//            }
             baseLevelList = gson.fromJson(jsonString, itemType)
         }
         catch (e: IOException) {
@@ -88,7 +84,7 @@ class BaseLevelsAdapter : RecyclerView.Adapter<BaseLevelsAdapter.MyViewHolder>()
     }
     inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(levelData: LevelInformation) {
-            binding.btnLevelListItem.text = levelData.levelName
+            binding.btnLevelListItem.text = levelData.levelname
             val context = binding.btnLevelListItem.context
             binding.btnLevelListItem.setOnClickListener {
                 val intent = Intent(context, LevelPlayActivity::class.java)

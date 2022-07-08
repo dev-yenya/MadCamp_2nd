@@ -48,22 +48,16 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
         _binding = ActivityOnlineLevelsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("WAIT", "1")
-
         job = Job()
-
-        Log.d("WAIT", "2")
 
         recyclerView = binding.recyclerViewOnlineLevels
         queryPage(currentPage, NavigationDirection.RIGHT)
-
-        Log.d("WAIT", "3")
 
         adapter.dataList = currentDataList
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        Log.d("WAIT", "4")
+
     }
 
     override fun onDestroy() {
@@ -79,8 +73,8 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
 
         if (pageData == null) {
             // 캐시에 자료가 없다.
-            val urlStr = "http://172.10.5.165:3000/level_list&page=${pageNumber}"
-            val result = httpRequest.request<ArrayList<LevelInformation>>("GET", urlStr, CoroutineScope(coroutineContext))
+            val urlStr = "/level_list/${pageNumber}"
+            val result = httpRequest.request("GET", urlStr, CoroutineScope(coroutineContext))
 
             if (result == null) {
                 // 리퀘스트 실패..
@@ -145,10 +139,11 @@ class OnlineLevelsAdapter : RecyclerView.Adapter<OnlineLevelsAdapter.MyViewHolde
     }
     inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(levelData: LevelInformation) {
-            binding.btnLevelListItem.text = levelData.levelName
+            binding.btnLevelListItem.text = levelData.levelname
             val context = binding.btnLevelListItem.context
+            Log.d("TAG", "TTT")
             binding.btnLevelListItem.setOnClickListener {
-                val intent = Intent(context, LevelPlayActivity::class.java)
+                val intent = Intent(context, ViewOnlineLevelActivity::class.java)
                 intent.putExtra("level_data", levelData)
                 context.startActivity(intent)
             }
