@@ -1,5 +1,6 @@
 package com.example.second_app
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +13,8 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.second_app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
-//import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.user.UserApiClient
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var navigationView: NavigationView
@@ -38,8 +40,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this) //navigation 리스너
 
-//        val keyHash = Utility.getKeyHash(this)
-//        Log.d("Hash", keyHash)
+        val keyHash = Utility.getKeyHash(this)
+        Log.d("Hash", keyHash)
 
         binding.btnMainStore.setOnClickListener {
             val intent = Intent(this, StoreEnterActivity::class.java)
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 /*val naEmail : TextView = findViewById(R.id.tv_h_email)
                 naEmail.text = FBAuth.getEmail()*/
                 drawerLayout.openDrawer(GravityCompat.START)
+
             }
         }
         return super.onOptionsItemSelected(item)
@@ -68,6 +71,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.menu_item_logout -> {
                 Toast.makeText(this,"Logout", Toast.LENGTH_SHORT).show()
+                UserApiClient.instance.logout { error ->
+                    if (error != null) {
+                        Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
+                    }
+                    else {
+                        Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨")
+                    }
+                }
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
