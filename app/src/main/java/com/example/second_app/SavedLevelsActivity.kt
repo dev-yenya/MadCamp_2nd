@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +18,6 @@ import com.google.gson.reflect.TypeToken
 import org.json.JSONException
 import java.io.*
 import java.lang.NullPointerException
-import java.util.logging.Level
 
 class SavedLevelsActivity: AppCompatActivity() {
     private var _binding: ActivitySavedLevelsBinding? = null

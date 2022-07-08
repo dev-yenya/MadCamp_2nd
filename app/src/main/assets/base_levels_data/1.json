@@ -7,31 +7,7 @@
     },
     {
       "type": "land",
-      "point": {"x": 0, "y": 1}
-    },
-    {
-      "type": "land",
-      "point": {"x": 0, "y": 2}
-    },
-    {
-      "type": "land",
-      "point": {"x": 0, "y": 3}
-    },
-    {
-      "type": "land",
       "point": {"x": 1, "y": 0}
-    },
-    {
-      "type": "water",
-      "point": {"x": 1, "y": 1}
-    },
-    {
-      "type": "land",
-      "point": {"x": 1, "y": 2}
-    },
-    {
-      "type": "land",
-      "point": {"x": 1, "y": 3}
     },
     {
       "type": "land",
@@ -39,7 +15,31 @@
     },
     {
       "type": "land",
+      "point": {"x": 3, "y": 0}
+    },
+    {
+      "type": "land",
+      "point": {"x": 0, "y": 1}
+    },
+    {
+      "type": "water",
+      "point": {"x": 1, "y": 1}
+    },
+    {
+      "type": "land",
       "point": {"x": 2, "y": 1}
+    },
+    {
+      "type": "land",
+      "point": {"x": 3, "y": 1}
+    },
+    {
+      "type": "land",
+      "point": {"x": 0, "y": 2}
+    },
+    {
+      "type": "land",
+      "point": {"x": 1, "y": 2}
     },
     {
       "type": "water",
@@ -47,19 +47,19 @@
     },
     {
       "type": "water",
-      "point": {"x": 2, "y": 3}
+      "point": {"x": 3, "y": 2}
     },
     {
       "type": "land",
-      "point": {"x": 3, "y": 0}
+      "point": {"x": 0, "y": 3}
     },
     {
       "type": "water",
-      "point": {"x": 3, "y": 1}
+      "point": {"x": 1, "y": 3}
     },
     {
       "type": "land",
-      "point": {"x": 3, "y": 2}
+      "point": {"x": 2, "y": 3}
     },
     {
       "type": "land",
@@ -67,8 +67,8 @@
     }
   ],
   "startpoint": {
-    "x": 0,
-    "y": 0
+    "x": 1,
+    "y": 2
   },
   "endpoint": {
     "x": 3,
