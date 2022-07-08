@@ -51,7 +51,7 @@ app.get('/levels/:id', (req,res)=>{
         if (err) {
             //res.writeHead(404);
             res.status(404).send('not found');
-            console.log("gel level failed");
+            console.log("get level failed");
         }
         else {
             console.log("get level success")
