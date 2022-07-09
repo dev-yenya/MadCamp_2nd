@@ -1,17 +1,24 @@
 package com.example.second_app
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.circleCrop
 import com.example.second_app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import com.kakao.sdk.common.util.Utility
+import com.kakao.sdk.talk.TalkApiClient
+import com.kakao.sdk.user.UserApiClient
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var navigationView: NavigationView
@@ -37,6 +44,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this) //navigation 리스너
 
+//        val keyHash = Utility.getKeyHash(this)
+//        Log.d("Hash", keyHash)
+
         binding.btnMainStore.setOnClickListener {
             val intent = Intent(this, StoreEnterActivity::class.java)
             startActivity(intent)
@@ -47,13 +57,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             startActivity(intent)
         }
 
+        val header = navigationView.getHeaderView(0)
+        val profileImg = header.findViewById<ImageView>(R.id.iv_main_user)
+        val userName = header.findViewById<TextView>(R.id.tv_main_user_name)
+
+        // 카카오톡 프로필 가져오기
+        TalkApiClient.instance.profile { profile, error ->
+            if (error != null) {
+                Log.e(TAG, "카카오톡 프로필 가져오기 실패", error)
+            }
+            else if (profile != null) {
+                Log.i(TAG, "카카오톡 프로필 가져오기 성공" +
+                        "\n닉네임: ${profile.nickname}" +
+                        "\n프로필사진: ${profile.thumbnailUrl}")
+                userName.text = profile.nickname
+                Glide.with(this).load(profile.thumbnailUrl).circleCrop().into(profileImg)
+            }
+        }
+
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 클릭한 툴바 메뉴 아이템 id 마다 다르게 실행하도록 설정
         when (item!!.itemId) {
             android.R.id.home -> {
-                /*val naEmail : TextView = findViewById(R.id.tv_h_email)
-                naEmail.text = FBAuth.getEmail()*/
                 drawerLayout.openDrawer(GravityCompat.START)
             }
         }
@@ -64,6 +90,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.menu_item_logout -> {
                 Toast.makeText(this,"Logout", Toast.LENGTH_SHORT).show()
+                UserApiClient.instance.logout { error ->
+                    if (error != null) {
+                        Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
+                    }
+                    else {
+                        Log.i(TAG, "로그아웃 성공. SDK에서 토큰 삭제됨")
+                    }
+                }
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
