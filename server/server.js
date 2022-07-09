@@ -7,8 +7,8 @@ const port = process.env.PORT || 80;
 
 const connection = mysql.createConnection({
     host : 'localhost',
-    user : '##########',
-    password : '############',
+    user : 'root',
+    password : 'globalwarming',
     database : 'week2'
 });
 
@@ -73,7 +73,7 @@ app.post('/levels', (req, res) => {
     connection.query('insert into levels(id, levelname, boardsize) values (?, ?, ?)', [id, levelname, boardsize], (error, rows, fields) => 
     {
         console.log(`POST /levels   ID = ${id}`);
-        res.send("success");
+        res.send("levels post success");
     });
 });
 
@@ -90,8 +90,22 @@ app.get('/level_list/:page', (req, res)=>{
     });
 });
 
-//level list
-//level 값
+
+// POST /users/:id
+// 유저의 정보 업데이트 (점수, 랭킹 등)
+app.post('/users', (req, res) => {
+    var id = req.body.id;
+    var rating = req.body.rating;
+    var username = req.body.username;
+    console.log(id, rating, username);
+    connection.query('insert into users(id, rating, username) values (?, ?, ?)', [id, rating, username], (error, rows, fields) => {
+        console.log(`POST /users   ID = ${id}`);
+        res.send("user post success");
+    });
+});
+
+// TODO : level list
+// TODO : level 값
 
 //router 객체를 app 객체에 등록
 app.use('/', router)
