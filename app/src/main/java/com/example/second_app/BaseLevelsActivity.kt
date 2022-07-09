@@ -41,7 +41,7 @@ class BaseLevelsActivity: AppCompatActivity() {
     }
 
     private fun readBaseLevels() {
-        var jsonString = ""
+        val jsonString: String
         try {
             val jsonFile = assets.open("base_levels.json")
             val inputStream = InputStreamReader(jsonFile)
@@ -55,10 +55,6 @@ class BaseLevelsActivity: AppCompatActivity() {
             jsonString = stringBuilder.toString()
 
             val itemType = object : TypeToken<MutableList<LevelInformation>>() {}.type
-//            val data: MutableList<String> = gson.fromJson(jsonString, itemType)
-//            for (d in data) {
-//                baseLevelList.add(gson.fromJson(d, LevelInformation::class.java))
-//            }
             baseLevelList = gson.fromJson(jsonString, itemType)
         }
         catch (e: IOException) {
@@ -87,12 +83,13 @@ class BaseLevelsAdapter : RecyclerView.Adapter<BaseLevelsAdapter.MyViewHolder>()
         holder.bind(dataList[position])
     }
     inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(levelData: LevelInformation) {
-            binding.btnLevelListItem.text = levelData.levelName
+        fun bind(levelMetadata: LevelInformation) {
+            binding.btnLevelListItem.text = levelMetadata.levelname
             val context = binding.btnLevelListItem.context
             binding.btnLevelListItem.setOnClickListener {
                 val intent = Intent(context, LevelPlayActivity::class.java)
-                intent.putExtra("level_data", levelData)
+                intent.putExtra("level_metadata", levelMetadata)
+                intent.putExtra("is_base_level", true)
                 context.startActivity(intent)
             }
         }

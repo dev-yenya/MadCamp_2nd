@@ -5,13 +5,155 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/text_level_play_a"
+        android:id="@+id/background_veryback"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blue_light"
+        />
+
+    <TextView
+        android:id="@+id/text_level_play_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        android:textColor="@color/black"
+        android:textSize="30sp"
         />
+
+    <ImageButton
+        android:id="@+id/imgbtn_level_play_left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.14"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inner_constraint"
+        android:background="@color/gray_light"
+        android:src="@drawable/arrowkey_left"
+        app:layout_constraintHorizontal_bias="0.07"
+        android:scaleType="fitXY"
+        />
+
+    <ImageButton
+        android:id="@+id/imgbtn_level_play_up"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.14"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toEndOf="@id/imgbtn_level_play_left"
+        app:layout_constraintBottom_toTopOf="@id/imgbtn_level_play_left"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/gray_light"
+        android:src="@drawable/arrowkey_up"
+        android:scaleType="fitXY"
+        />
+
+    <ImageButton
+        android:id="@+id/imgbtn_level_play_down"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.14"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toEndOf="@id/imgbtn_level_play_left"
+        app:layout_constraintTop_toBottomOf="@id/imgbtn_level_play_left"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/gray_light"
+        android:src="@drawable/arrowkey_down"
+        android:scaleType="fitXY"
+        />
+
+    <ImageButton
+        android:id="@+id/imgbtn_level_play_right"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.14"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toEndOf="@id/imgbtn_level_play_down"
+        app:layout_constraintTop_toBottomOf="@id/imgbtn_level_play_up"
+        app:layout_constraintBottom_toTopOf="@id/imgbtn_level_play_down"
+        android:layout_marginStart="8dp"
+        android:background="@color/gray_light"
+        android:src="@drawable/arrowkey_right"
+        android:scaleType="fitXY"
+        />
+
+    <Button
+        android:id="@+id/btn_level_play_extra"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.25"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imgbtn_level_play_up"
+        app:layout_constraintBottom_toBottomOf="@id/imgbtn_level_play_down"
+        app:layout_constraintHorizontal_bias="0.85"
+        android:text="EXTRA"
+        android:textSize="15sp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/inner_constraint"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintWidth_percent="0.95">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_level_play_board"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            >
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <ImageView
+            android:id="@+id/board_goal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/board_goal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/main_character"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/main_character"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_level_play_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/inner_constraint"
+        app:layout_constraintBottom_toTopOf="@id/inner_constraint"
+        android:background="@color/white"
+        android:textSize="24sp"
+        android:textColor="@color/blue"
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

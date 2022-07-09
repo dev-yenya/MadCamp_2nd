@@ -1,26 +1,32 @@
 [
   {
-    "levelId": 1,
-    "levelName": "Level 1"
+    "id": 1,
+    "levelname": "Level 1",
+    "boardsize": 4
   },
   {
-    "levelId": 2,
-    "levelName": "Level 2"
+    "id": 2,
+    "levelname": "Level 2",
+    "boardsize": 6
   },
   {
-    "levelId": 3,
-    "levelName": "Level 350"
+    "id": 3,
+    "levelname": "Level 350",
+    "boardsize": 6
   },
   {
-    "levelId": 4,
-    "levelName": "Good Level"
+    "id": 4,
+    "levelname": "Good Level",
+    "boardsize": 6
   },
   {
-    "levelId": 5,
-    "levelName": "Fine Level"
+    "id": 5,
+    "levelname": "Fine Level",
+    "boardsize": 7
   },
   {
-    "levelId": 6,
-    "levelName": "Last Level"
+    "id": 6,
+    "levelname": "Last Level",
+    "boardsize": 9
   }
 ]

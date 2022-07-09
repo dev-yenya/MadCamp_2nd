@@ -1,0 +1,78 @@
+{
+  "id": 1,
+  "tiles": [
+    {
+      "type": "land",
+      "point": {"x": 0, "y": 0}
+    },
+    {
+      "type": "land",
+      "point": {"x": 1, "y": 0}
+    },
+    {
+      "type": "land",
+      "point": {"x": 2, "y": 0}
+    },
+    {
+      "type": "land",
+      "point": {"x": 3, "y": 0}
+    },
+    {
+      "type": "land",
+      "point": {"x": 0, "y": 1}
+    },
+    {
+      "type": "water",
+      "point": {"x": 1, "y": 1}
+    },
+    {
+      "type": "water",
+      "point": {"x": 2, "y": 1}
+    },
+    {
+      "type": "land",
+      "point": {"x": 3, "y": 1}
+    },
+    {
+      "type": "land",
+      "point": {"x": 0, "y": 2}
+    },
+    {
+      "type": "land",
+      "point": {"x": 1, "y": 2}
+    },
+    {
+      "type": "land",
+      "point": {"x": 2, "y": 2}
+    },
+    {
+      "type": "land",
+      "point": {"x": 3, "y": 2}
+    },
+    {
+      "type": "land",
+      "point": {"x": 0, "y": 3}
+    },
+    {
+      "type": "water",
+      "point": {"x": 1, "y": 3}
+    },
+    {
+      "type": "land",
+      "point": {"x": 2, "y": 3}
+    },
+    {
+      "type": "water",
+      "point": {"x": 3, "y": 3}
+    }
+  ],
+  "startpoint": {
+    "x": 0,
+    "y": 0
+  },
+  "endpoint": {
+    "x": 2,
+    "y": 3
+  },
+  "inittemp": 20.0
+}

@@ -1,13 +1,47 @@
 package com.example.second_app
 
-import android.content.Intent
+import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.view.WindowManager
+import android.view.WindowMetrics
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.second_app.databinding.ActivityLevelPlayBinding
+import com.example.second_app.databinding.TileItemBinding
+import com.google.gson.Gson
+import java.io.BufferedReader
+import java.io.InputStreamReader
+
+object ButtonDirection {
+    const val LEFT = 7500
+    const val RIGHT = 7501
+    const val UP = 7502
+    const val DOWN = 7503
+}
 
 class LevelPlayActivity: AppCompatActivity() {
     private var _binding: ActivityLevelPlayBinding? = null
     private val binding get() = _binding!!
+    private val gson = Gson()
+    private lateinit var boardAdapter: BoardAdapter
+    private var arrowButtonsEnabled = true
+    private var extraButtonsEnabled = true
+    private var recyclerWidth = 0
+    private var boardSize = 0
+
+    // 게임 중의 변수 값
+    private var temperature: Double = 0.0
+    private var mainCharacterMoveType = "walking"
+    private lateinit var endPoint: Point
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,7 +49,302 @@ class LevelPlayActivity: AppCompatActivity() {
         _binding = ActivityLevelPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val levelData = intent.extras!!.getSerializable("level_data") as LevelInformation
-        binding.textLevelPlayA.text = levelData.levelName
+        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
+        val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
+
+        binding.textLevelPlayTitle.text = levelMetadata.levelname
+
+        val levelData = readLevelData(levelMetadata.id, isBaseLevel)
+
+        // 보드 설정.
+        val board = binding.recyclerViewLevelPlayBoard
+        boardSize = levelMetadata.boardsize
+
+        // 보드 설정을 위해 스크린 크기를 구하자.
+        val screenWidth = getScreenWidth(this)
+        recyclerWidth = (screenWidth * 0.95 / boardSize).toInt()
+
+        boardAdapter = BoardAdapter(recyclerWidth)
+        boardAdapter.tileList = levelData.tiles
+        board.adapter = boardAdapter
+        board.setHasFixedSize(true)
+
+        board.layoutManager = GridLayoutManager(this, boardSize)
+
+        // 메인 캐릭터의 이미지와 크기 설정.
+        val layoutParams = binding.mainCharacter.layoutParams
+        layoutParams.width = recyclerWidth
+        layoutParams.height = recyclerWidth
+        binding.mainCharacter.layoutParams = layoutParams
+
+        val constraintLayoutParams = binding.mainCharacter.layoutParams as ConstraintLayout.LayoutParams
+        constraintLayoutParams.marginStart = levelData.startpoint.x * recyclerWidth
+        constraintLayoutParams.topMargin = levelData.startpoint.y * recyclerWidth
+        binding.mainCharacter.layoutParams = constraintLayoutParams
+
+        // 도착점의 위치 설정.
+        endPoint = levelData.endpoint
+        val goalLayoutParams = binding.boardGoal.layoutParams as ConstraintLayout.LayoutParams
+        goalLayoutParams.width = recyclerWidth
+        goalLayoutParams.height = recyclerWidth
+        goalLayoutParams.marginStart = endPoint.x * recyclerWidth
+        goalLayoutParams.topMargin = endPoint.y * recyclerWidth
+        binding.boardGoal.layoutParams = goalLayoutParams
+
+        // 그 외 설정.
+        temperature = levelData.inittemp
+        setTemperature()
+
+        binding.imgbtnLevelPlayUp.setOnClickListener {
+            moveCharacter(ButtonDirection.UP)
+        }
+        binding.imgbtnLevelPlayDown.setOnClickListener {
+            moveCharacter(ButtonDirection.DOWN)
+        }
+        binding.imgbtnLevelPlayLeft.setOnClickListener {
+            moveCharacter(ButtonDirection.LEFT)
+        }
+        binding.imgbtnLevelPlayRight.setOnClickListener {
+            moveCharacter(ButtonDirection.RIGHT)
+        }
+        binding.btnLevelPlayExtra.setOnClickListener {
+            handleButtonAvailability(isArrowButton = false)
+            dropTemperature(0.5)
+            handleButtonAvailability(isArrowButton = false)
+        }
+    }
+
+    // 이 시점에서 levelid.json 파일은 반드시 존재해야 한다.
+    private fun readLevelData(id: Int, isBaseLevel: Boolean): LevelData {
+        val jsonString: String
+        if (isBaseLevel) {
+            // 기본 레벨인 경우
+            val jsonFile = assets.open("base_levels_data/$id.json")
+            val inputStream = InputStreamReader(jsonFile)
+            val bufferedReader = BufferedReader(inputStream)
+            val stringBuilder = StringBuilder()
+            var receiveString: String?
+
+            while (bufferedReader.readLine().also { receiveString = it } != null) {
+                stringBuilder.append(receiveString)
+            }
+            jsonString = stringBuilder.toString()
+            inputStream.close()
+        }
+        else {
+            // 사용자가 만든 레벨인 경우
+            // 반드시 값이 존재해야 하므로 assert
+            val inputStream = openFileInput("$id.json")!!
+            val inputStreamReader = InputStreamReader(inputStream)
+            val bufferedReader = BufferedReader(inputStreamReader)
+            var receiveString: String?
+            val stringBuilder = StringBuilder()
+            while (bufferedReader.readLine().also { receiveString = it } != null) {
+                stringBuilder.append(receiveString)
+            }
+            jsonString = stringBuilder.toString()
+            inputStream.close()
+        }
+        return gson.fromJson(jsonString, LevelData::class.java)
+    }
+
+    private fun handleButtonAvailability(isArrowButton: Boolean) {
+        if (isArrowButton) {
+            arrowButtonsEnabled = !arrowButtonsEnabled
+            binding.imgbtnLevelPlayDown.isEnabled = arrowButtonsEnabled
+            binding.imgbtnLevelPlayLeft.isEnabled = arrowButtonsEnabled
+            binding.imgbtnLevelPlayUp.isEnabled = arrowButtonsEnabled
+            binding.imgbtnLevelPlayDown.isEnabled = arrowButtonsEnabled
+        }
+        else {
+            extraButtonsEnabled = !extraButtonsEnabled
+            binding.imgbtnLevelPlayDown.isEnabled = extraButtonsEnabled
+            binding.imgbtnLevelPlayUp.isEnabled = extraButtonsEnabled
+            binding.imgbtnLevelPlayLeft.isEnabled = extraButtonsEnabled
+            binding.imgbtnLevelPlayRight.isEnabled = extraButtonsEnabled
+        }
+    }
+
+    private fun moveCharacter(direction: Int) {
+        handleButtonAvailability(isArrowButton = true)
+
+        val constraintLayoutParams = binding.mainCharacter.layoutParams as ConstraintLayout.LayoutParams
+        val posX = constraintLayoutParams.marginStart / recyclerWidth
+        val posY = constraintLayoutParams.topMargin / recyclerWidth
+        val tiles = boardAdapter.tileList
+        var resultX = posX
+        var resultY = posY
+
+        when (direction) {
+            ButtonDirection.LEFT -> {
+                if (posX == 0) {
+                    Toast.makeText(this, "이미 왼쪽 끝이야!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val targetTile = tiles[posX + boardSize * posY - 1]
+                    if (checkMovable(targetTile.type)) {
+                        constraintLayoutParams.marginStart -= recyclerWidth
+                        raiseTemperature(0.1)
+                        resultX -= 1
+                    }
+                    else {
+                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            ButtonDirection.RIGHT -> {
+                if (posX == boardSize - 1) {
+                    Toast.makeText(this, "이미 오른쪽 끝이야!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val targetTile = tiles[posX + boardSize * posY + 1]
+                    if (checkMovable(targetTile.type)) {
+                        constraintLayoutParams.marginStart += recyclerWidth
+                        raiseTemperature(0.1)
+                        resultX += 1
+                    }
+                    else {
+                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            ButtonDirection.UP -> {
+                if (posY == 0) {
+                    Toast.makeText(this, "이미 위쪽 끝이야!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val targetTile = tiles[posX + boardSize * (posY - 1)]
+                    if (checkMovable(targetTile.type)) {
+                        constraintLayoutParams.topMargin -= recyclerWidth
+                        raiseTemperature(0.1)
+                        resultY -= 1
+                    }
+                    else {
+                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            ButtonDirection.DOWN -> {
+                if (posY == boardSize - 1) {
+                    Toast.makeText(this, "이미 아래쪽 끝이야!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val targetTile = tiles[posX + boardSize * (posY + 1)]
+                    if (checkMovable(targetTile.type)) {
+                        constraintLayoutParams.topMargin += recyclerWidth
+                        raiseTemperature(0.1)
+                        resultY += 1
+                    }
+                    else {
+                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            else -> throw Error("Direction $direction not allowed.")
+        }
+
+        binding.mainCharacter.layoutParams = constraintLayoutParams
+        checkReachedGoal(resultX, resultY)
+        handleButtonAvailability(isArrowButton = true)
+    }
+
+    // 대상 타일로 움직일 수 있는지 확인한다.
+    private fun checkMovable(tileType: String): Boolean {
+        return when (mainCharacterMoveType) {
+            "walking" -> when (tileType) {
+                "water" -> false
+                else -> true
+            }
+            else -> false
+        }
+    }
+
+    // 목적지에 도착했는지 확인한다.
+    private fun checkReachedGoal(posX: Int, posY: Int) {
+        if (posX == endPoint.x && posY == endPoint.y) {
+            Toast.makeText(this, "레벨 완료: ${binding.textLevelPlayTemperature.text}", Toast.LENGTH_SHORT).show()
+            // TODO: 레벨을 완료했다는 것을 result로 보낼 수 있을까?
+            finish()
+        }
+    }
+
+    // 온도 표시 및 수정 함수들.
+    private fun setTemperature() {
+        val str = String.format(resources.getString(R.string.level_play_temperature_display), displayTemperature())
+        when {
+            temperature > 30.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.red))
+            temperature > 25.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            else -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.blue))
+        }
+        binding.textLevelPlayTemperature.text = str
+    }
+
+    private fun raiseTemperature(temp: Double) {
+        assert(temp > 0.0)
+        temperature += temp
+        setTemperature()
+    }
+
+    private fun dropTemperature(temp: Double) {
+        assert(temp < 0.0)
+        temperature -= temp
+        setTemperature()
+    }
+
+    private fun displayTemperature(): String {
+        return String.format("%.1f", temperature)
+    }
+}
+
+class BoardAdapter(private val recyclerWidth: Int) : RecyclerView.Adapter<BoardAdapter.MyViewHolder>(){
+    var tileList = mutableListOf<Tile>()
+    private var _binding : TileItemBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+        _binding = TileItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+        val binding = binding
+
+        return MyViewHolder(binding, recyclerWidth)
+    }
+
+    override fun getItemCount(): Int = tileList.size
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind(tileList[position])
+    }
+    inner class MyViewHolder(private var binding: TileItemBinding, private val width: Int) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(tileData: Tile) {
+            val imageId = when (tileData.type) {
+                "land" -> R.drawable.tile_land
+                "water" -> R.drawable.tile_water
+                else -> throw Error("${tileData.type} is not allowed.")
+            }
+            val layoutParams = binding.imgTileItem.layoutParams
+            layoutParams.width = width
+            layoutParams.height = width
+            binding.imgTileItem.layoutParams = layoutParams
+            binding.imgTileItem.setImageResource(imageId)
+        }
+    }
+}
+
+fun getScreenWidth(context: Context): Int {
+    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
+        val metrics: WindowMetrics = context.getSystemService(WindowManager::class.java).currentWindowMetrics
+        return metrics.bounds.width()
+    }
+    else {
+        @Suppress("DEPRECATION")
+        val display = context.getSystemService(WindowManager::class.java).defaultDisplay
+        val metrics = if (display != null) {
+            DisplayMetrics().also {
+                @Suppress("DEPRECATION")
+                display.getRealMetrics(it)
+            }
+        } else {
+            Resources.getSystem().displayMetrics
+        }
+        return metrics.widthPixels
     }
 }

@@ -2,7 +2,6 @@ package com.example.second_app
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import com.example.second_app.databinding.LevelListItemBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 object NavigationDirection {
@@ -48,22 +46,16 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
         _binding = ActivityOnlineLevelsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("WAIT", "1")
-
         job = Job()
-
-        Log.d("WAIT", "2")
 
         recyclerView = binding.recyclerViewOnlineLevels
         queryPage(currentPage, NavigationDirection.RIGHT)
-
-        Log.d("WAIT", "3")
 
         adapter.dataList = currentDataList
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        Log.d("WAIT", "4")
+        // TODO: 이전 페이지, 다음 페이지 불러오는 버튼 추가하자.
     }
 
     override fun onDestroy() {
@@ -72,15 +64,15 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
     }
 
     // GET /level_list/pageNumber 를 전송한다.
-    // 이 경우 (pageNumber * 20) ~ ((pageNumber + 1) * 20) - 1
+    // 이 경우 (pageNumber * 10) ~ ((pageNumber + 1) * 10) - 1
     // 에 해당하는 레벨들을 받아온다.
     private fun queryPage(pageNumber: Int, navigationDirection: Int) {
         val pageData = levelsCached[pageNumber]
 
         if (pageData == null) {
             // 캐시에 자료가 없다.
-            val urlStr = "http://172.10.5.165:3000/level_list&page=${pageNumber}"
-            val result = httpRequest.request<ArrayList<LevelInformation>>("GET", urlStr, CoroutineScope(coroutineContext))
+            val urlStr = "/level_list/${pageNumber}"
+            val result = httpRequest.requestLevelList(urlStr, CoroutineScope(coroutineContext))
 
             if (result == null) {
                 // 리퀘스트 실패..
@@ -144,12 +136,12 @@ class OnlineLevelsAdapter : RecyclerView.Adapter<OnlineLevelsAdapter.MyViewHolde
         holder.bind(dataList[position])
     }
     inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(levelData: LevelInformation) {
-            binding.btnLevelListItem.text = levelData.levelName
+        fun bind(levelMetadata: LevelInformation) {
+            binding.btnLevelListItem.text = levelMetadata.levelname
             val context = binding.btnLevelListItem.context
             binding.btnLevelListItem.setOnClickListener {
-                val intent = Intent(context, LevelPlayActivity::class.java)
-                intent.putExtra("level_data", levelData)
+                val intent = Intent(context, ViewOnlineLevelActivity::class.java)
+                intent.putExtra("level_metadata", levelMetadata)
                 context.startActivity(intent)
             }
         }
