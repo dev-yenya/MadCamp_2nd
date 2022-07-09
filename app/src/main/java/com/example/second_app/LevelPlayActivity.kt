@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -58,9 +59,8 @@ class LevelPlayActivity: AppCompatActivity() {
         activityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {
-                val score = it.data?.getDoubleExtra("temperature_score", 0.0)
                 val intent = Intent()
-                intent.putExtra("temperature_score", score)
+                intent.putExtra("temperature_score", temperature)
                 setResult(RESULT_OK, intent)
                 if (!isFinishing) finish()
             }
@@ -78,7 +78,7 @@ class LevelPlayActivity: AppCompatActivity() {
         boardSize = levelMetadata.boardsize
 
         // 보드 설정을 위해 스크린 크기를 구하자.
-        val screenWidth = getScreenWidth(this)
+        val screenWidth = getScreenSize(this).width
         recyclerWidth = (screenWidth * 0.95 / boardSize).toInt()
 
         boardAdapter = BoardAdapter(recyclerWidth)
@@ -282,8 +282,10 @@ class LevelPlayActivity: AppCompatActivity() {
     private fun checkReachedGoal(posX: Int, posY: Int) {
         if (posX == endPoint.x && posY == endPoint.y) {
             Toast.makeText(this, "레벨 완료: ${binding.textLevelPlayTemperature.text}", Toast.LENGTH_SHORT).show()
-            // TODO: 레벨을 완료했다는 것을 result로 보낼 수 있을까?
-            finish()
+
+            val intent = Intent(this, LevelCompleteActivity::class.java)
+            intent.putExtra("temperature_score", temperature)
+            activityLauncher.launch(intent)
         }
     }
 
@@ -292,7 +294,7 @@ class LevelPlayActivity: AppCompatActivity() {
         val str = String.format(resources.getString(R.string.level_play_temperature_display), displayTemperature())
         when {
             temperature > 30.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.red))
-            temperature > 25.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            temperature > 25.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.green))
             else -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.blue))
         }
         binding.textLevelPlayTemperature.text = str
@@ -348,10 +350,10 @@ class BoardAdapter(private val recyclerWidth: Int) : RecyclerView.Adapter<BoardA
     }
 }
 
-fun getScreenWidth(context: Context): Int {
+fun getScreenSize(context: Context): Size {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
         val metrics: WindowMetrics = context.getSystemService(WindowManager::class.java).currentWindowMetrics
-        return metrics.bounds.width()
+        return Size(metrics.bounds.width(), metrics.bounds.height())
     }
     else {
         @Suppress("DEPRECATION")
@@ -364,6 +366,6 @@ fun getScreenWidth(context: Context): Int {
         } else {
             Resources.getSystem().displayMetrics
         }
-        return metrics.widthPixels
+        return Size(metrics.widthPixels, metrics.heightPixels)
     }
 }
