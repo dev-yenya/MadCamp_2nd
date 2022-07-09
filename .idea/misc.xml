@@ -20,6 +20,17 @@
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_main.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/appbar.xml" value="0.26927083333333335" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/header.xml" value="0.2546875" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_make_v.xml" value="0.268" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_online_v.xml" value="0.1965" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_saved_v.xml" value="0.1965" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_base_levels.xml" value="0.20878623188405798" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_create_level.xml" value="0.18645833333333334" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_level_play.xml" value="0.20878623188405798" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_online_levels.xml" value="0.18645833333333334" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_saved_levels.xml" value="0.18645833333333334" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_store_enter.xml" value="0.25" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_view_online_level.xml" value="0.2671875" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/level_list_item.xml" value="0.18645833333333334" />
       </map>
     </option>
   </component>

@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.second_app">
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
@@ -42,8 +41,28 @@
         </activity>
         <activity
             android:name=".StoreEnterActivity">
-        </activity>
 
+        </activity>
+        <activity
+            android:name=".LevelPlayActivity">
+
+        </activity>
+        <activity
+            android:name=".CreateLevelActivity">
+
+        </activity>
+        <activity
+            android:name=".OnlineLevelsActivity">
+
+        </activity>
+        <activity
+            android:name=".SavedLevelsActivity">
+
+        </activity>
+        <activity
+            android:name=".ViewOnlineLevelActivity">
+
+        </activity>
     </application>
 
 </manifest>

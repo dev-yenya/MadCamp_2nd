@@ -8,5 +8,6 @@ import java.io.Serializable
 
 data class LevelInformation(
     val levelId: Int,
+    val levelName: String,
     // 더 추가할 것.
 ): Serializable

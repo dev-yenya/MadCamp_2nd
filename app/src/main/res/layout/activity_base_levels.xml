@@ -4,53 +4,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/btn_base_levels_1"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_base_levels"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.18"
-        app:layout_constraintWidth_percent="0.7"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.15"
-        android:text="레벨 1"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.7"
+        >
 
-    <Button
-        android:id="@+id/btn_base_levels_2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.18"
-        app:layout_constraintWidth_percent="0.7"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        android:text="레벨 2"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        />
 
-    <Button
-        android:id="@+id/btn_base_levels_3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.18"
-        app:layout_constraintWidth_percent="0.7"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.85"
-        android:text="레벨 3"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        />
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 

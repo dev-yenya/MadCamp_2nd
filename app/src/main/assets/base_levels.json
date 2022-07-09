@@ -1,11 +1,26 @@
 [
   {
-    "levelId": 1
+    "levelId": 1,
+    "levelName": "Level 1"
   },
   {
-    "levelId": 2
+    "levelId": 2,
+    "levelName": "Level 2"
   },
   {
-    "levelId": 3
+    "levelId": 3,
+    "levelName": "Level 350"
+  },
+  {
+    "levelId": 4,
+    "levelName": "Good Level"
+  },
+  {
+    "levelId": 5,
+    "levelName": "Fine Level"
+  },
+  {
+    "levelId": 6,
+    "levelName": "Last Level"
   }
 ]

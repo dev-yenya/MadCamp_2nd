@@ -44,9 +44,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navigationView = findViewById(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this) //navigation 리스너
 
-
-        val keyHash = Utility.getKeyHash(this)
-        Log.d("Hash", keyHash)
+//        val keyHash = Utility.getKeyHash(this)
+//        Log.d("Hash", keyHash)
 
         binding.btnMainStore.setOnClickListener {
             val intent = Intent(this, StoreEnterActivity::class.java)
@@ -82,7 +81,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item!!.itemId) {
             android.R.id.home -> {
                 drawerLayout.openDrawer(GravityCompat.START)
-
             }
         }
         return super.onOptionsItemSelected(item)
