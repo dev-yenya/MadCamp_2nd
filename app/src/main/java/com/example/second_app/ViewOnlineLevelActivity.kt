@@ -7,14 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.second_app.databinding.ActivityViewOnlineLevelBinding
 import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import org.json.JSONException
 import java.io.*
-import java.lang.NullPointerException
 import kotlin.coroutines.CoroutineContext
 
 class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
@@ -65,7 +62,7 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
                 val file = File(filesDir, name)
                 file.createNewFile()
 //                val levelData = httpRequest.requestLevel("GET", "/levels/${metadata.id}", CoroutineScope(coroutineContext))
-                val levelData = httpRequest.requestGeneral<LevelData>("GET", "/levels/${metadata.id}", CoroutineScope(coroutineContext))
+                val levelData = httpRequest.requestGeneral<LevelData>("GET", "/levels/${metadata.id}", "", CoroutineScope(coroutineContext))
 
                 if (levelData != null) {
                     // 레벨 다운 성공!
