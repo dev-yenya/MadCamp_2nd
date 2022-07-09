@@ -123,6 +123,14 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
+        <ImageView
+            android:id="@+id/board_goal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/board_goal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <ImageView
             android:id="@+id/main_character"
@@ -133,9 +141,18 @@
             android:src="@drawable/main_character"
             />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <TextView
+        android:id="@+id/text_level_play_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@id/inner_constraint"
+        app:layout_constraintBottom_toTopOf="@id/inner_constraint"
+        android:background="@color/white"
+        android:textSize="24sp"
+        android:textColor="@color/blue"
+        />
 
 
 

@@ -16,7 +16,8 @@ import java.net.URL
 import java.util.logging.Level
 import kotlin.String
 
-const val ipAddress = "http://172.10.5.165"
+// 서버 IP 주소.
+const val ipAddress = "http://192.249.18.201"
 
 class HttpRequest {
     private val gson = Gson()

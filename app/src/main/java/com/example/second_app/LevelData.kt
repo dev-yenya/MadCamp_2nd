@@ -7,6 +7,7 @@ data class LevelData(
     val tiles: ArrayList<Tile>,
     val startpoint: Point,
     val endpoint: Point,
+    val inittemp: Double,
 ): Serializable
 
 data class Tile(
@@ -17,4 +18,8 @@ data class Tile(
 data class Point(
     val x: Int,
     val y: Int,
+): Serializable
+
+data class LevelObject(
+    val type: String,
 ): Serializable
