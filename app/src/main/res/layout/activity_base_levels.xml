@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/play_background">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_base_levels"
@@ -15,8 +16,6 @@
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintHeight_percent="0.7"
         >
-
-
     </androidx.recyclerview.widget.RecyclerView>
 
 

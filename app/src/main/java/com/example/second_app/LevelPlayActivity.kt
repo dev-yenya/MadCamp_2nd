@@ -79,7 +79,7 @@ class LevelPlayActivity: AppCompatActivity() {
 
         // 보드 설정을 위해 스크린 크기를 구하자.
         val screenWidth = getScreenSize(this).width
-        recyclerWidth = (screenWidth * 0.95 / boardSize).toInt()
+        recyclerWidth = (screenWidth * 0.9 / boardSize).toInt()
 
         boardAdapter = BoardAdapter(recyclerWidth)
         boardAdapter.tileList = levelData.tiles

@@ -28,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val intent = Intent(this, MainActivity::class.java)
+        Log.e("size: ",getScreenSize(this).toString())
         //로그인
         binding.btnLoginLogin.setOnClickListener{
             UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->

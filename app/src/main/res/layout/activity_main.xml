@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/play_background">
 
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -14,23 +15,40 @@
         tools:layout_editor_absoluteX="-147dp"
         tools:layout_editor_absoluteY="-16dp"
         tools:openDrawer="start">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.215"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/background"
+            android:scaleType="centerCrop"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center">
-            <Button
+            android:gravity="center"
+            android:layout_marginTop="150dp">
+            <android.widget.Button
                 android:id="@+id/btn_main_base_level"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Base Level"
-                android:layout_margin="20dp"/>
+                android:textColor="@color/white"
+                android:layout_margin="20dp"
+                android:background="@drawable/round_button"/>
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_main_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Store" />
+                android:textColor="@color/white"
+                android:text="Store"
+                android:layout_margin="20dp"
+                android:background="@drawable/round_button"/>
         </LinearLayout>
         <include
             layout="@layout/appbar"

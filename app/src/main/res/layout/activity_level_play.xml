@@ -1,104 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/play_background">
 
-    <TextView
-        android:id="@+id/background_veryback"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/blue_light"
-        />
 
-    <TextView
+    <android.widget.Button
         android:id="@+id/text_level_play_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="20dp"
+        android:background="@drawable/round_button"
+        android:text="level"
+        android:textColor="@color/white"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        />
-
-    <ImageButton
-        android:id="@+id/imgbtn_level_play_left"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.16"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inner_constraint"
-        android:background="@color/gray_light"
-        android:src="@drawable/arrowkey_left"
-        app:layout_constraintHorizontal_bias="0.07"
-        android:scaleType="fitXY"
-        />
+        app:layout_constraintVertical_bias="0.101" />
 
     <ImageButton
         android:id="@+id/imgbtn_level_play_up"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.16"
+        android:background="@color/gray"
+        android:scaleType="fitXY"
+        android:src="@drawable/arrowkey_up"
+        app:layout_constraintBottom_toTopOf="@id/imgbtn_level_play_left"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toEndOf="@id/imgbtn_level_play_left"
-        app:layout_constraintBottom_toTopOf="@id/imgbtn_level_play_left"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/gray_light"
-        android:src="@drawable/arrowkey_up"
-        android:scaleType="fitXY"
-        />
+        app:layout_constraintWidth_percent="0.16" />
 
     <ImageButton
         android:id="@+id/imgbtn_level_play_down"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.16"
+        android:background="@color/gray"
+        android:scaleType="fitXY"
+        android:src="@drawable/arrowkey_down"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toEndOf="@id/imgbtn_level_play_left"
         app:layout_constraintTop_toBottomOf="@id/imgbtn_level_play_left"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/gray_light"
-        android:src="@drawable/arrowkey_down"
+        app:layout_constraintWidth_percent="0.16" />
+
+    <ImageButton
+        android:id="@+id/imgbtn_level_play_left"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/round_button"
         android:scaleType="fitXY"
-        />
+        android:src="@drawable/arrowkey_left"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.118"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inner_constraint"
+        app:layout_constraintVertical_bias="0.508"
+        app:layout_constraintWidth_percent="0.16" />
 
     <ImageButton
         android:id="@+id/imgbtn_level_play_right"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.16"
+        android:background="#333333"
+        android:scaleType="fitXY"
+        android:src="@drawable/arrowkey_right"
+        app:layout_constraintBottom_toTopOf="@id/imgbtn_level_play_down"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toEndOf="@id/imgbtn_level_play_down"
         app:layout_constraintTop_toBottomOf="@id/imgbtn_level_play_up"
-        app:layout_constraintBottom_toTopOf="@id/imgbtn_level_play_down"
-        android:layout_marginStart="8dp"
-        android:background="@color/gray_light"
-        android:src="@drawable/arrowkey_right"
-        android:scaleType="fitXY"
-        />
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintWidth_percent="0.16" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btn_level_play_extra"
-        android:layout_height="0dp"
-        android:layout_width="0dp"
-        app:layout_constraintWidth_percent="0.25"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imgbtn_level_play_up"
-        app:layout_constraintBottom_toBottomOf="@id/imgbtn_level_play_down"
-        app:layout_constraintHorizontal_bias="0.85"
-        android:text="EXTRA"
+        android:layout_width="97dp"
+        android:layout_height="96dp"
+        android:background="@drawable/round_magenta_button"
+        android:text="Extra"
+        android:textColor="@color/white"
         android:textSize="15sp"
-        />
+        app:layout_constraintBottom_toBottomOf="@id/imgbtn_level_play_down"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imgbtn_level_play_up"
+        app:layout_constraintVertical_bias="0.519"
+        app:layout_constraintWidth_percent="0.25" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/inner_constraint"
@@ -111,7 +105,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3"
-        app:layout_constraintWidth_percent="0.95">
+        app:layout_constraintWidth_percent="0.9">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_level_play_board"
@@ -120,7 +114,6 @@
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
             >
-
         </androidx.recyclerview.widget.RecyclerView>
 
         <ImageView
@@ -141,19 +134,19 @@
             android:src="@drawable/main_character"
             />
 
+        <TextView
+            android:id="@+id/text_level_play_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="temp"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:textSize="12sp"
+            tools:layout_editor_absoluteX="342dp"
+            tools:layout_editor_absoluteY="0dp"
+            tools:ignore="MissingConstraints" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <TextView
-        android:id="@+id/text_level_play_temperature"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/inner_constraint"
-        app:layout_constraintBottom_toTopOf="@id/inner_constraint"
-        android:background="@color/white"
-        android:textSize="24sp"
-        android:textColor="@color/blue"
-        />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
