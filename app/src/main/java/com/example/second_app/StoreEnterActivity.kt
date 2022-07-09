@@ -20,7 +20,7 @@ class StoreEnterActivity: AppCompatActivity() {
         }
 
         binding.btnStoreEnterMake.setOnClickListener {
-            val intent = Intent(this, CreateLevelActivity::class.java)
+            val intent = Intent(this, CreateSetupActivity::class.java)
             startActivity(intent)
         }
 

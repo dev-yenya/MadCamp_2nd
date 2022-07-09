@@ -18,7 +18,7 @@
       "point": {"x": 3, "y": 0}
     },
     {
-      "type": "land",
+      "type": "ice",
       "point": {"x": 0, "y": 1}
     },
     {
@@ -34,7 +34,7 @@
       "point": {"x": 3, "y": 1}
     },
     {
-      "type": "land",
+      "type": "ice",
       "point": {"x": 0, "y": 2}
     },
     {
@@ -50,7 +50,7 @@
       "point": {"x": 3, "y": 2}
     },
     {
-      "type": "land",
+      "type": "ice",
       "point": {"x": 0, "y": 3}
     },
     {
@@ -62,7 +62,7 @@
       "point": {"x": 2, "y": 3}
     },
     {
-      "type": "water",
+      "type": "ice",
       "point": {"x": 3, "y": 3}
     }
   ],
@@ -70,9 +70,19 @@
     "x": 0,
     "y": 0
   },
-  "endpoint": {
-    "x": 2,
-    "y": 3
-  },
-  "inittemp": 20.0
+  "inittemp": 20.0,
+  "items": [
+    {
+      "type": "goal",
+      "point": {"x": 2, "y": 3}
+    },
+    {
+      "type": "fire",
+      "point": {"x": 3, "y": 0}
+    },
+    {
+      "type": "life",
+      "point": {"x": 0, "y": 3}
+    }
+  ]
 }

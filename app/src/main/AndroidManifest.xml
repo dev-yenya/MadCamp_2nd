@@ -67,6 +67,10 @@
             android:theme="@android:style/Theme.Dialog">
 
         </activity>
+        <activity
+            android:name=".CreateSetupActivity">
+
+        </activity>
     </application>
 
 </manifest>
