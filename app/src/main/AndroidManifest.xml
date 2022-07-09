@@ -63,6 +63,11 @@
             android:name=".ViewOnlineLevelActivity">
 
         </activity>
+        <activity
+            android:name=".LevelCompleteActivity"
+            android:theme="@android:style/Theme.Dialog">
+
+        </activity>
     </application>
 
 </manifest>

@@ -118,7 +118,7 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
             // 캐시에 자료가 없다.
             val urlStr = "/level_list/${pageNumber}"
 //            val result = httpRequest.requestLevelList(urlStr, CoroutineScope(coroutineContext))
-            val result = httpRequest.requestGeneral<ArrayList<LevelInformation>>("GET", urlStr, CoroutineScope(coroutineContext))
+            val result = httpRequest.requestGeneral<ArrayList<LevelInformation>>("GET", urlStr, "", CoroutineScope(coroutineContext))
 
             if (result == null) {
                 // 리퀘스트 실패..
