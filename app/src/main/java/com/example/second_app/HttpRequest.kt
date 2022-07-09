@@ -6,13 +6,9 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
-import java.io.Serializable
+import java.io.*
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.String
 
 // 서버 IP 주소.
 const val ipAddress = "http://192.249.18.201"
@@ -29,6 +25,15 @@ class HttpRequest {
                 connection.connectTimeout = 1000
                 connection.requestMethod = method
                 connection.doInput = true
+
+                if (postBody != "" && method == "POST") {
+                    connection.readTimeout = 3000
+                    connection.setRequestProperty("Content-Type", "application/json")
+                    val bw = BufferedWriter(OutputStreamWriter(connection.outputStream))
+                    bw.write(postBody)
+                    bw.flush()
+                    bw.close()
+                }
 
                 val resCode = connection.responseCode
                 if (resCode == HttpURLConnection.HTTP_OK) {
