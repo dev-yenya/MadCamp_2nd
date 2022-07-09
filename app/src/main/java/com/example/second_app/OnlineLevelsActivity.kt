@@ -55,7 +55,52 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        // TODO: 이전 페이지, 다음 페이지 불러오는 버튼 추가하자.
+        val str = String.format(resources.getString(R.string.online_levels_page), currentPage + 1)
+        binding.textOnlineLevelsPage.text = str
+
+        binding.imgbtnOnlineLevelsPrevPage.setOnClickListener {
+            currentPage -= 1
+
+            queryPage(currentPage, NavigationDirection.LEFT)
+
+            binding.imgbtnOnlineLevelsPrevPage.isEnabled = (currentPage != 0)
+            binding.imgbtnOnlineLevelsNextPage.isEnabled = currentDataList.isNotEmpty()
+
+            if (currentDataList.isEmpty()) {
+                binding.recyclerViewOnlineLevels.visibility = View.INVISIBLE
+                binding.onlineLoadFailedImage.visibility = View.VISIBLE
+                binding.onlineLoadFailedText.visibility = View.VISIBLE
+            }
+            else {
+                binding.recyclerViewOnlineLevels.visibility = View.VISIBLE
+                binding.onlineLoadFailedImage.visibility = View.INVISIBLE
+                binding.onlineLoadFailedText.visibility = View.INVISIBLE
+            }
+
+            binding.textOnlineLevelsPage.text = String.format(resources.getString(R.string.online_levels_page), currentPage + 1)
+            adapter.notifyDataSetChanged()
+        }
+        binding.imgbtnOnlineLevelsNextPage.setOnClickListener {
+            currentPage += 1
+            queryPage(currentPage, NavigationDirection.RIGHT)
+
+            binding.imgbtnOnlineLevelsPrevPage.isEnabled = (currentPage > 0)
+            binding.imgbtnOnlineLevelsNextPage.isEnabled = currentDataList.isNotEmpty()
+
+            if (currentDataList.isEmpty()) {
+                binding.recyclerViewOnlineLevels.visibility = View.INVISIBLE
+                binding.onlineLoadFailedImage.visibility = View.VISIBLE
+                binding.onlineLoadFailedText.visibility = View.VISIBLE
+            }
+            else {
+                binding.recyclerViewOnlineLevels.visibility = View.VISIBLE
+                binding.onlineLoadFailedImage.visibility = View.INVISIBLE
+                binding.onlineLoadFailedText.visibility = View.INVISIBLE
+            }
+
+            binding.textOnlineLevelsPage.text = String.format(resources.getString(R.string.online_levels_page), currentPage + 1)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onDestroy() {
@@ -72,7 +117,8 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
         if (pageData == null) {
             // 캐시에 자료가 없다.
             val urlStr = "/level_list/${pageNumber}"
-            val result = httpRequest.requestLevelList(urlStr, CoroutineScope(coroutineContext))
+//            val result = httpRequest.requestLevelList(urlStr, CoroutineScope(coroutineContext))
+            val result = httpRequest.requestGeneral<ArrayList<LevelInformation>>("GET", urlStr, CoroutineScope(coroutineContext))
 
             if (result == null) {
                 // 리퀘스트 실패..
@@ -108,6 +154,7 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
             // 캐시에 자료가 있다.
             currentDataList = pageData
         }
+
     }
 
     private fun getMaxIndex(): Int {

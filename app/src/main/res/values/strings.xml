@@ -6,6 +6,7 @@
     <string name="saved_no_levels">다운로드 받은 레벨이 없습니다.\n스토어에서 레벨을 검색해보세요.</string>
     <string name="saved_levels_title">저장된 레벨 목록</string>
     <string name="online_levels_title">온라인 레벨 목록</string>
+    <string name="online_levels_page">%1$d페이지</string>
     <string name="online_levels_load_failed">레벨 목록을 불러오지 못했습니다.</string>
     <string name="view_online_levels_play">플레이</string>
     <string name="level_play_temperature_display">%1$s°C</string>

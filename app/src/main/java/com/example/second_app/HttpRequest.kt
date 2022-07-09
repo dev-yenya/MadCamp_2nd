@@ -20,50 +20,9 @@ import kotlin.String
 const val ipAddress = "http://192.249.18.201"
 
 class HttpRequest {
-    private val gson = Gson()
+    val gson = Gson()
 
-    fun requestLevelList(urlStr: String, scope: CoroutineScope): MutableList<LevelInformation>? = runBlocking {
-        withContext(scope.coroutineContext) {
-            val stringBuilder = StringBuilder()
-            try {
-                val url = URL(ipAddress + urlStr)
-                val connection: HttpURLConnection = url.openConnection() as HttpURLConnection
-                connection.connectTimeout = 1000
-                connection.requestMethod = "GET"
-                connection.doInput = true
-
-                val resCode = connection.responseCode
-                if (resCode == HttpURLConnection.HTTP_OK) {
-                    val inputStream = InputStreamReader(connection.inputStream)
-                    val reader = BufferedReader(inputStream)
-                    var line: String?
-                    while (true) {
-                        line = reader.readLine()
-                        if (line == null) break
-                        stringBuilder.append(line + "\n")
-                    }
-                    inputStream.close()
-                    reader.close()
-                    connection.disconnect()
-
-                    val response = stringBuilder.toString()
-                    Log.d("OK", response)
-
-                    val itemType = object : TypeToken<MutableList<LevelInformation>>() {}.type
-                    val returnList: MutableList<LevelInformation> = gson.fromJson(response, itemType)
-                    returnList
-                } else {
-                    Log.d("CODE", "request code: $resCode")
-                    null
-                }
-            } catch (e: IOException) {
-                Log.d("IO_ERR", "request error: ${e.message!!}")
-                null
-            }
-        }
-    }
-
-    fun requestLevel(method: String, urlStr: String, scope: CoroutineScope): LevelData? = runBlocking {
+    fun request(method: String, urlStr: String, scope: CoroutineScope): String? = runBlocking {
         withContext(scope.coroutineContext) {
             val stringBuilder = StringBuilder()
             try {
@@ -89,8 +48,7 @@ class HttpRequest {
 
                     val response = stringBuilder.toString()
                     Log.d("OK", response)
-
-                    gson.fromJson(response, LevelData::class.java)
+                    response
                 } else {
                     Log.d("CODE", "request code: $resCode")
                     null
@@ -99,6 +57,36 @@ class HttpRequest {
                 Log.d("IO_ERR", "request error: ${e.message!!}")
                 null
             }
+        }
+    }
+
+    fun requestLevelList(urlStr: String, scope: CoroutineScope): MutableList<LevelInformation>? {
+        val response = request("GET", urlStr, scope)
+        val itemType = object: TypeToken<MutableList<LevelInformation>>() {}.type
+        return if (response == null) {
+            null
+        } else {
+            gson.fromJson(response, itemType)
+        }
+    }
+
+    fun requestLevel(method: String, urlStr: String, scope: CoroutineScope): LevelData? {
+        val response = request(method, urlStr, scope)
+        val itemType = object: TypeToken<LevelData>() {}.type
+        return if (response == null) {
+            null
+        } else {
+            gson.fromJson(response, itemType)
+        }
+    }
+
+    inline fun <reified T: Serializable> requestGeneral(method: String, urlStr: String, scope: CoroutineScope): T? {
+        val response = request(method, urlStr, scope)
+        val itemType = object: TypeToken<T>() {}.type
+        return if (response == null) {
+            null
+        } else {
+            gson.fromJson(response, itemType)
         }
     }
 }

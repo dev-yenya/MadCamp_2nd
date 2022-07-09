@@ -1,6 +1,7 @@
 package com.example.second_app
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.WindowMetrics
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -31,6 +34,7 @@ class LevelPlayActivity: AppCompatActivity() {
     private var _binding: ActivityLevelPlayBinding? = null
     private val binding get() = _binding!!
     private val gson = Gson()
+    private lateinit var activityLauncher: ActivityResultLauncher<Intent>
     private lateinit var boardAdapter: BoardAdapter
     private var arrowButtonsEnabled = true
     private var extraButtonsEnabled = true
@@ -48,6 +52,19 @@ class LevelPlayActivity: AppCompatActivity() {
 
         _binding = ActivityLevelPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 팝업 액티비티를 실행하여 "temperature_score"를 key로 갖는 점수를 받는다.
+        // 그 후 레벨 선택 화면으로 돌아간다.
+        activityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {
+                val score = it.data?.getDoubleExtra("temperature_score", 0.0)
+                val intent = Intent()
+                intent.putExtra("temperature_score", score)
+                setResult(RESULT_OK, intent)
+                if (!isFinishing) finish()
+            }
+
 
         val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
         val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
@@ -165,6 +182,8 @@ class LevelPlayActivity: AppCompatActivity() {
         }
     }
 
+    // 캐릭터를 direction이 가리키는 방향으로 움직인다.
+    // TODO: 애니메이션을 추가해보자.
     private fun moveCharacter(direction: Int) {
         handleButtonAvailability(isArrowButton = true)
 
@@ -178,7 +197,7 @@ class LevelPlayActivity: AppCompatActivity() {
         when (direction) {
             ButtonDirection.LEFT -> {
                 if (posX == 0) {
-                    Toast.makeText(this, "이미 왼쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 왼쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * posY - 1]
@@ -188,13 +207,13 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultX -= 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             ButtonDirection.RIGHT -> {
                 if (posX == boardSize - 1) {
-                    Toast.makeText(this, "이미 오른쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 오른쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * posY + 1]
@@ -204,13 +223,13 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultX += 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             ButtonDirection.UP -> {
                 if (posY == 0) {
-                    Toast.makeText(this, "이미 위쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 위쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * (posY - 1)]
@@ -220,13 +239,13 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultY -= 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             ButtonDirection.DOWN -> {
                 if (posY == boardSize - 1) {
-                    Toast.makeText(this, "이미 아래쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 아래쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * (posY + 1)]
@@ -236,7 +255,7 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultY += 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

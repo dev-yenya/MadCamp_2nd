@@ -64,7 +64,8 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
                 // 파일을 생성하고, 요청을 보내고, 서버가 보낸 값을 파일에 저장하자.
                 val file = File(filesDir, name)
                 file.createNewFile()
-                val levelData = httpRequest.requestLevel("GET", "/levels/${metadata.id}", CoroutineScope(coroutineContext))
+//                val levelData = httpRequest.requestLevel("GET", "/levels/${metadata.id}", CoroutineScope(coroutineContext))
+                val levelData = httpRequest.requestGeneral<LevelData>("GET", "/levels/${metadata.id}", CoroutineScope(coroutineContext))
 
                 if (levelData != null) {
                     // 레벨 다운 성공!
