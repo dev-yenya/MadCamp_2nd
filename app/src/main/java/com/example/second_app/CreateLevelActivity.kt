@@ -2,6 +2,7 @@ package com.example.second_app
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.second_app.databinding.ActivityCreateLevelBinding
 import com.google.gson.Gson
@@ -24,11 +25,16 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
         _binding = ActivityCreateLevelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.testBtn.setOnClickListener {
-            val postBody = gson.toJson(UserInformation("lasadsa", 2040, "hahahha"))
-            Log.d("ASDF", postBody)
-            httpRequest.request("POST", "/users", postBody, CoroutineScope(coroutineContext))
+        binding.btnBack.text = intent.getIntExtra("board_size", 9999).toString()
+
+        binding.btnBack.setOnClickListener {
+            Toast.makeText(this, "테스트 중", Toast.LENGTH_SHORT).show()
+            if (!isFinishing) finish()
         }
+    }
+
+    override fun onBackPressed() {
+        return
     }
 
     override fun onDestroy() {

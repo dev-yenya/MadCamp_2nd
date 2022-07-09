@@ -6,16 +6,30 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import com.example.second_app.databinding.ActivityLoginBinding
+import com.google.gson.Gson
 import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
+import com.kakao.sdk.talk.TalkApiClient
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), CoroutineScope {
     private var mBinding : ActivityLoginBinding?= null
     private val binding get() = mBinding!!
+
+    private val httpRequest = HttpRequest()
+    private val gson = Gson()
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
+
+
     val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         if (error != null) {
             Log.e(TAG, "카카오계정으로 로그인 실패", error)
@@ -38,6 +52,17 @@ class LoginActivity : AppCompatActivity() {
                 else if (token != null) {
                     Log.i(TAG, "로그인 성공 ${token.accessToken}")
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+
+                    TalkApiClient.instance.profile { profile, error ->
+                        if (error != null) {
+                            Log.e(TAG, "카카오톡 프로필 가져오기 실패", error)
+                        }
+                        else if (profile != null) {
+                            val postBody = gson.toJson(UserInformation(token.accessToken, 0, profile.nickname?:""))
+                            httpRequest.request("POST", "/users", postBody, CoroutineScope(coroutineContext))
+                        }
+                    }
+
                     startActivity(intent)
                     finish()
                 }
@@ -64,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
         if (AuthApiClient.instance.hasToken()) {
             UserApiClient.instance.accessTokenInfo { _, error ->
                 if (error != null) {
-                    if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
+                    if (error is KakaoSdkError && error.isInvalidTokenError()) {
                         throw(error)
                     }
                     else {
@@ -84,5 +109,6 @@ class LoginActivity : AppCompatActivity() {
         // onDestroy 에서 binding class 인스턴스 참조를 정리해주어야 한다.
         mBinding = null
         super.onDestroy()
+        job.cancel()
     }
 }

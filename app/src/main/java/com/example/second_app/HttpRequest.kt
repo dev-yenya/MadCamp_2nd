@@ -27,8 +27,9 @@ class HttpRequest {
                 connection.doInput = true
 
                 if (postBody != "" && method == "POST") {
+                    Log.d("POSTBODY", postBody)
                     connection.readTimeout = 3000
-                    connection.setRequestProperty("Content-Type", "application/json")
+                    connection.setRequestProperty("Content-Type", "application/json; charset=utf-8")
                     val bw = BufferedWriter(OutputStreamWriter(connection.outputStream))
                     bw.write(postBody)
                     bw.flush()
