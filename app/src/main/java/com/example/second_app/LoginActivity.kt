@@ -27,6 +27,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val intent = Intent(this, MainActivity::class.java)
+        //로그인
         binding.btnLoginLogin.setOnClickListener{
             UserApiClient.instance.loginWithKakaoAccount(this) { token, error ->
                 if (error != null) {
@@ -34,14 +36,14 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else if (token != null) {
                     Log.i(TAG, "로그인 성공 ${token.accessToken}")
-                    val intent = Intent(this, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     finish()
                 }
             }
         }
-        binding.btnLogout.setOnClickListener{
+        //로그아웃
+        binding.btnLoginLogout.setOnClickListener{
             UserApiClient.instance.logout { error ->
                 if (error != null) {
                     Log.e(TAG, "로그아웃 실패. SDK에서 토큰 삭제됨", error)
@@ -51,6 +53,13 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
+        //개발 : 로그인 skip 버튼
+        binding.btnLoginDev.setOnClickListener{
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+            finish()
+        }
+        //자동 로그인
         if (AuthApiClient.instance.hasToken()) {
             UserApiClient.instance.accessTokenInfo { _, error ->
                 if (error != null) {
@@ -61,7 +70,6 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
                 else {
-                    val intent = Intent(this, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     finish()
