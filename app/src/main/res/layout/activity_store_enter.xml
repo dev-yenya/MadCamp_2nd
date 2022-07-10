@@ -21,7 +21,7 @@
         android:layout_marginTop="10dp"
         />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btn_store_enter_make"
         android:layout_height="0dp"
         android:layout_width="0dp"
@@ -33,15 +33,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.15"
         android:orientation="vertical"
-        android:drawableLeft="@drawable/store_enter_make_v"
-        android:background="@color/transparent"
+        android:drawableLeft="@drawable/hammer_resize"
+        android:paddingLeft="40dp"
+        android:background="@drawable/round_button"
         android:text="@string/store_enter_make"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         >
 
-    </Button>
+    </android.widget.Button>
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btn_store_enter_online"
         android:layout_height="0dp"
         android:layout_width="0dp"
@@ -53,15 +54,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.5"
         android:orientation="vertical"
-        android:drawableLeft="@drawable/store_enter_online_v"
-        android:background="@color/transparent"
+        android:paddingLeft="40dp"
+        android:drawableLeft="@drawable/shopping_resize"
         android:text="@string/store_enter_online"
-        android:textColor="@color/black"
+        android:background="@drawable/round_button"
+        android:textColor="@color/white"
         >
 
-    </Button>
+    </android.widget.Button>
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btn_store_enter_saved"
         android:layout_height="0dp"
         android:layout_width="0dp"
@@ -73,13 +75,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.85"
         android:orientation="vertical"
-        android:drawableLeft="@drawable/store_enter_saved_v"
-        android:background="@color/transparent"
+        android:drawableLeft="@drawable/folder_resize"
+        android:paddingLeft="40dp"
         android:text="@string/store_enter_saved"
-        android:textColor="@color/black"
+        android:background="@drawable/round_button"
+        android:textColor="@color/white"
         >
 
-    </Button>
+    </android.widget.Button>
 
 
 

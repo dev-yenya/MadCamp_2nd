@@ -31,24 +31,28 @@
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="150dp">
+            android:layout_marginTop="300dp">
             <android.widget.Button
                 android:id="@+id/btn_main_base_level"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Base Level"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
+                android:text="Base"
+                android:layout_margin="10dp"
+                android:paddingLeft="20dp"
                 android:textColor="@color/white"
-                android:layout_margin="20dp"
-                android:background="@drawable/round_button"/>
-
+                android:background="@drawable/round_button"
+                android:drawableLeft="@drawable/base_level_resize"
+                />
             <android.widget.Button
                 android:id="@+id/btn_main_store"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:layout_height="60dp"
                 android:textColor="@color/white"
                 android:text="Store"
-                android:layout_margin="20dp"
-                android:background="@drawable/round_button"/>
+                android:layout_margin="10dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/round_button"
+                android:drawableLeft="@drawable/store_resize"/>
         </LinearLayout>
         <include
             layout="@layout/appbar"

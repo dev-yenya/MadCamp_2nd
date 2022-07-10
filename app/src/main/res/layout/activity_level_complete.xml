@@ -62,7 +62,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btn_level_complete_ok"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -76,6 +76,7 @@
         android:text="@string/level_complete_ok"
         android:textColor="@color/white"
         android:textSize="20sp"
+        android:background="@drawable/round_button"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
