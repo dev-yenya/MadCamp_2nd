@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.util.Size
 import android.view.*
 import android.widget.ImageView
@@ -59,9 +60,11 @@ class LevelPlayActivity: AppCompatActivity() {
         activityLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {
+                // MEMO: 레벨을 클리어할 경우 RESULT_FIRST_USER를 리턴한다.
+                // 클리어하지 못하면 +1을 하는걸로..?
                 val intent = Intent()
                 intent.putExtra("temperature_score", temperature)
-                setResult(RESULT_OK, intent)
+                setResult(RESULT_FIRST_USER, intent)
                 if (!isFinishing) finish()
             }
 
@@ -72,9 +75,12 @@ class LevelPlayActivity: AppCompatActivity() {
         binding.textLevelPlayTitle.text = levelMetadata.levelname
 
         val levelData = readLevelData(levelMetadata.id, isBaseLevel)
-        val initLevelData = levelData.copy()
 
-        items = levelData.items
+        Log.d("LEVEL_PLAY", "ID=${levelMetadata.id}")
+
+        val initLevelData = levelData
+
+        items = levelData.items.toMutableList()
 
         // 보드 설정.
         val board = binding.recyclerViewLevelPlayBoard
@@ -109,7 +115,7 @@ class LevelPlayActivity: AppCompatActivity() {
             val cSet = ConstraintSet()
             val childView = ImageView(this)
             childView.id = View.generateViewId()
-            parentLayout.addView(childView, i)
+            parentLayout.addView(childView, 6)
 
             val childLayoutParams = childView.layoutParams
             childLayoutParams.width = recyclerWidth
@@ -121,22 +127,24 @@ class LevelPlayActivity: AppCompatActivity() {
 
             cSet.clone(parentLayout)
             val (posX, posY) = item.point
-            cSet.connect(childView.id, ConstraintSet.START, parentLayout.id, ConstraintSet.START, posX * recyclerWidth)
-            cSet.connect(childView.id, ConstraintSet.TOP, parentLayout.id, ConstraintSet.TOP, posY * recyclerWidth)
+            cSet.connect(
+                childView.id,
+                ConstraintSet.START,
+                parentLayout.id,
+                ConstraintSet.START,
+                posX * recyclerWidth
+            )
+            cSet.connect(
+                childView.id,
+                ConstraintSet.TOP,
+                parentLayout.id,
+                ConstraintSet.TOP,
+                posY * recyclerWidth
+            )
             cSet.applyTo(parentLayout)
 
             itemMap[item] = childView.id
-
-//            endPoint = levelData.endpoint
-//            val goalLayoutParams = binding.boardGoal.layoutParams as ConstraintLayout.LayoutParams
-//            goalLayoutParams.width = recyclerWidth
-//            goalLayoutParams.height = recyclerWidth
-//            goalLayoutParams.marginStart = endPoint.x * recyclerWidth
-//            goalLayoutParams.topMargin = endPoint.y * recyclerWidth
-//            binding.boardGoal.layoutParams = goalLayoutParams
         }
-
-
         // 그 외 설정.
         temperature = levelData.inittemp
         setTemperature()
@@ -307,6 +315,7 @@ class LevelPlayActivity: AppCompatActivity() {
         }
     }
 
+    // posX, posY 타일로 이동했을 때, 아이템이 있는지 확인한다.
     private fun checkItemEvent(posX: Int, posY: Int) {
         for (item in items) {
             if (posX == item.point.x && posY == item.point.y) {

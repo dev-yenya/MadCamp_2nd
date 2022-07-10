@@ -25,7 +25,7 @@ class CreateSetupActivity: AppCompatActivity() {
 
     private fun submitSize() {
         val intent = Intent(this, CreateLevelActivity::class.java)
-        Log.d("TAG", binding.editTextCreateSetupSize.text.toString())
+
         val boardSize = binding.editTextCreateSetupSize.text.toString().toInt()
         if (boardSize > 15 || boardSize < 4) {
             Toast.makeText(this, "4~15 사이의 값만 가능", Toast.LENGTH_SHORT).show()
