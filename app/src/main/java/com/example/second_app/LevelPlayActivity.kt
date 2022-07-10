@@ -3,6 +3,7 @@ package com.example.second_app
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Size
@@ -341,6 +342,7 @@ class LevelPlayActivity: AppCompatActivity() {
 
     // 온도 표시 및 수정 함수들.
     private fun setTemperature() {
+        binding.progressBarLevelPlayTemperature.max=100
         val str = String.format(resources.getString(R.string.level_play_temperature_display), displayTemperature())
         when {
             temperature > 30.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.red))
@@ -348,6 +350,8 @@ class LevelPlayActivity: AppCompatActivity() {
             else -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.blue))
         }
         binding.textLevelPlayTemperature.text = str
+        binding.progressBarLevelPlayTemperature.progress = (temperature*10-200).toInt()
+
     }
 
     private fun raiseTemperature(temp: Double) {

@@ -21,6 +21,9 @@ class CreateSetupActivity: AppCompatActivity() {
         binding.btnCreateSetupCreate.setOnClickListener {
             submitSize()
         }
+        binding.imgbtnCreateSetup.setOnClickListener {
+            if (!isFinishing) finish()
+        }
     }
 
     private fun submitSize() {

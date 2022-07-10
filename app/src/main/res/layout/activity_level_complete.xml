@@ -9,15 +9,15 @@
         android:id="@+id/text_level_complete_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/level_complete_title"
+        android:textColor="@color/black"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.51"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.1"
-        android:text="@string/level_complete_title"
-        android:textSize="40sp"
-        android:textColor="@color/black"
-        />
+        app:layout_constraintVertical_bias="0.151" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_level_complete_result"

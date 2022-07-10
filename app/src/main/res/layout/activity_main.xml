@@ -30,8 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_marginTop="300dp">
+            android:gravity="center_horizontal|bottom">
             <android.widget.Button
                 android:id="@+id/btn_main_base_level"
                 android:layout_width="150dp"
@@ -42,17 +41,19 @@
                 android:textColor="@color/white"
                 android:background="@drawable/round_button"
                 android:drawableLeft="@drawable/base_level_resize"
+                android:layout_marginBottom="100dp"
                 />
+
             <android.widget.Button
                 android:id="@+id/btn_main_store"
                 android:layout_width="150dp"
                 android:layout_height="60dp"
-                android:textColor="@color/white"
-                android:text="Store"
                 android:layout_margin="10dp"
-                android:paddingLeft="20dp"
                 android:background="@drawable/round_button"
-                android:drawableLeft="@drawable/store_resize"/>
+                android:drawableLeft="@drawable/store_resize"
+                android:paddingLeft="20dp"
+                android:text="Store"
+                android:textColor="@color/white" />
         </LinearLayout>
         <include
             layout="@layout/appbar"

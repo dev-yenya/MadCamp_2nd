@@ -17,12 +17,22 @@ import com.example.second_app.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 import com.kakao.sdk.talk.TalkApiClient
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class
+
+MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
+    CoroutineScope {
     lateinit var navigationView: NavigationView
     lateinit var drawerLayout: DrawerLayout
     private var mBinding : ActivityMainBinding?= null
+    private val httpRequest = HttpRequest()
     private val binding get() = mBinding!!
+    private val job = Job()
+    override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,16 +73,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         TalkApiClient.instance.profile { profile, error ->
             if (error != null) {
                 Log.e(TAG, "카카오톡 프로필 가져오기 실패", error)
-            }
-            else if (profile != null) {
-                Log.i(TAG, "카카오톡 프로필 가져오기 성공" +
-                        "\n닉네임: ${profile.nickname}" +
-                        "\n프로필사진: ${profile.thumbnailUrl}")
+            } else if (profile != null) {
+                Log.i(
+                    TAG, "카카오톡 프로필 가져오기 성공" +
+                            "\n닉네임: ${profile.nickname}" +
+                            "\n프로필사진: ${profile.thumbnailUrl}"
+                )
                 userName.text = profile.nickname
                 Glide.with(this).load(profile.thumbnailUrl).circleCrop().into(profileImg)
             }
         }
-
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 클릭한 툴바 메뉴 아이템 id 마다 다르게 실행하도록 설정
