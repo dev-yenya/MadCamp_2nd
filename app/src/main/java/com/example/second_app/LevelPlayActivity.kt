@@ -1,16 +1,19 @@
 package com.example.second_app
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.view.WindowManager
-import android.view.WindowMetrics
+import android.util.Size
+import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +34,7 @@ class LevelPlayActivity: AppCompatActivity() {
     private var _binding: ActivityLevelPlayBinding? = null
     private val binding get() = _binding!!
     private val gson = Gson()
+    private lateinit var activityLauncher: ActivityResultLauncher<Intent>
     private lateinit var boardAdapter: BoardAdapter
     private var arrowButtonsEnabled = true
     private var extraButtonsEnabled = true
@@ -40,7 +44,8 @@ class LevelPlayActivity: AppCompatActivity() {
     // 게임 중의 변수 값
     private var temperature: Double = 0.0
     private var mainCharacterMoveType = "walking"
-    private lateinit var endPoint: Point
+    private lateinit var items: MutableList<Item>
+    private val itemMap: MutableMap<Item, Int> = mutableMapOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,20 +54,35 @@ class LevelPlayActivity: AppCompatActivity() {
         _binding = ActivityLevelPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 팝업 액티비티를 실행하여 "temperature_score"를 key로 갖는 점수를 받는다.
+        // 그 후 레벨 선택 화면으로 돌아간다.
+        activityLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            {
+                val intent = Intent()
+                intent.putExtra("temperature_score", temperature)
+                setResult(RESULT_OK, intent)
+                if (!isFinishing) finish()
+            }
+
+
         val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
         val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
 
         binding.textLevelPlayTitle.text = levelMetadata.levelname
 
         val levelData = readLevelData(levelMetadata.id, isBaseLevel)
+        val initLevelData = levelData.copy()
+
+        items = levelData.items
 
         // 보드 설정.
         val board = binding.recyclerViewLevelPlayBoard
         boardSize = levelMetadata.boardsize
 
         // 보드 설정을 위해 스크린 크기를 구하자.
-        val screenWidth = getScreenWidth(this)
-        recyclerWidth = (screenWidth * 0.95 / boardSize).toInt()
+        val screenWidth = getScreenSize(this).width
+        recyclerWidth = (screenWidth * 0.9 / boardSize).toInt()
 
         boardAdapter = BoardAdapter(recyclerWidth)
         boardAdapter.tileList = levelData.tiles
@@ -82,14 +102,40 @@ class LevelPlayActivity: AppCompatActivity() {
         constraintLayoutParams.topMargin = levelData.startpoint.y * recyclerWidth
         binding.mainCharacter.layoutParams = constraintLayoutParams
 
-        // 도착점의 위치 설정.
-        endPoint = levelData.endpoint
-        val goalLayoutParams = binding.boardGoal.layoutParams as ConstraintLayout.LayoutParams
-        goalLayoutParams.width = recyclerWidth
-        goalLayoutParams.height = recyclerWidth
-        goalLayoutParams.marginStart = endPoint.x * recyclerWidth
-        goalLayoutParams.topMargin = endPoint.y * recyclerWidth
-        binding.boardGoal.layoutParams = goalLayoutParams
+        // 아이템의 위치 설정
+        val parentLayout = binding.innerConstraint
+
+        for ((i, item) in items.withIndex()) {
+            val cSet = ConstraintSet()
+            val childView = ImageView(this)
+            childView.id = View.generateViewId()
+            parentLayout.addView(childView, i)
+
+            val childLayoutParams = childView.layoutParams
+            childLayoutParams.width = recyclerWidth
+            childLayoutParams.height = recyclerWidth
+            childView.layoutParams = childLayoutParams
+            childView.setImageResource(item.getImageId())
+            childView.scaleType = ImageView.ScaleType.CENTER_CROP
+            childView.bringToFront()
+
+            cSet.clone(parentLayout)
+            val (posX, posY) = item.point
+            cSet.connect(childView.id, ConstraintSet.START, parentLayout.id, ConstraintSet.START, posX * recyclerWidth)
+            cSet.connect(childView.id, ConstraintSet.TOP, parentLayout.id, ConstraintSet.TOP, posY * recyclerWidth)
+            cSet.applyTo(parentLayout)
+
+            itemMap[item] = childView.id
+
+//            endPoint = levelData.endpoint
+//            val goalLayoutParams = binding.boardGoal.layoutParams as ConstraintLayout.LayoutParams
+//            goalLayoutParams.width = recyclerWidth
+//            goalLayoutParams.height = recyclerWidth
+//            goalLayoutParams.marginStart = endPoint.x * recyclerWidth
+//            goalLayoutParams.topMargin = endPoint.y * recyclerWidth
+//            binding.boardGoal.layoutParams = goalLayoutParams
+        }
+
 
         // 그 외 설정.
         temperature = levelData.inittemp
@@ -165,6 +211,8 @@ class LevelPlayActivity: AppCompatActivity() {
         }
     }
 
+    // 캐릭터를 direction이 가리키는 방향으로 움직인다.
+    // TODO: 애니메이션을 추가해보자.
     private fun moveCharacter(direction: Int) {
         handleButtonAvailability(isArrowButton = true)
 
@@ -178,7 +226,7 @@ class LevelPlayActivity: AppCompatActivity() {
         when (direction) {
             ButtonDirection.LEFT -> {
                 if (posX == 0) {
-                    Toast.makeText(this, "이미 왼쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 왼쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * posY - 1]
@@ -188,13 +236,13 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultX -= 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             ButtonDirection.RIGHT -> {
                 if (posX == boardSize - 1) {
-                    Toast.makeText(this, "이미 오른쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 오른쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * posY + 1]
@@ -204,13 +252,13 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultX += 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             ButtonDirection.UP -> {
                 if (posY == 0) {
-                    Toast.makeText(this, "이미 위쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 위쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * (posY - 1)]
@@ -220,13 +268,13 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultY -= 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
             ButtonDirection.DOWN -> {
                 if (posY == boardSize - 1) {
-                    Toast.makeText(this, "이미 아래쪽 끝이야!", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "이미 아래쪽 끝이야!", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     val targetTile = tiles[posX + boardSize * (posY + 1)]
@@ -236,7 +284,7 @@ class LevelPlayActivity: AppCompatActivity() {
                         resultY += 1
                     }
                     else {
-                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "물 위로는 갈 수 없어!", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -244,7 +292,7 @@ class LevelPlayActivity: AppCompatActivity() {
         }
 
         binding.mainCharacter.layoutParams = constraintLayoutParams
-        checkReachedGoal(resultX, resultY)
+        checkItemEvent(resultX, resultY)
         handleButtonAvailability(isArrowButton = true)
     }
 
@@ -259,12 +307,35 @@ class LevelPlayActivity: AppCompatActivity() {
         }
     }
 
-    // 목적지에 도착했는지 확인한다.
-    private fun checkReachedGoal(posX: Int, posY: Int) {
-        if (posX == endPoint.x && posY == endPoint.y) {
-            Toast.makeText(this, "레벨 완료: ${binding.textLevelPlayTemperature.text}", Toast.LENGTH_SHORT).show()
-            // TODO: 레벨을 완료했다는 것을 result로 보낼 수 있을까?
-            finish()
+    private fun checkItemEvent(posX: Int, posY: Int) {
+        for (item in items) {
+            if (posX == item.point.x && posY == item.point.y) {
+                when (item.type) {
+                    "goal" -> {
+                        val intent = Intent(this, LevelCompleteActivity::class.java)
+                        intent.putExtra("temperature_score", temperature)
+                        activityLauncher.launch(intent)
+                    }
+                    "life" -> {
+                        dropTemperature(1.0)
+                        val viewId = itemMap[item]!!
+                        val parentLayout = binding.innerConstraint
+                        parentLayout.removeView(findViewById(viewId))
+                        itemMap.remove(item)
+                        items.remove(item)
+                    }
+                    "fire" -> {
+                        raiseTemperature(2.0)
+                        val viewId = itemMap[item]!!
+                        val parentLayout = binding.innerConstraint
+                        parentLayout.removeView(findViewById(viewId))
+                        itemMap.remove(item)
+                        items.remove(item)
+                    }
+                    else -> throw Error("Item type ${item.type} is not allowed")
+                }
+                break
+            }
         }
     }
 
@@ -273,7 +344,7 @@ class LevelPlayActivity: AppCompatActivity() {
         val str = String.format(resources.getString(R.string.level_play_temperature_display), displayTemperature())
         when {
             temperature > 30.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.red))
-            temperature > 25.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.yellow))
+            temperature > 25.0 -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.green))
             else -> binding.textLevelPlayTemperature.setTextColor(ContextCompat.getColor(this, R.color.blue))
         }
         binding.textLevelPlayTemperature.text = str
@@ -286,7 +357,7 @@ class LevelPlayActivity: AppCompatActivity() {
     }
 
     private fun dropTemperature(temp: Double) {
-        assert(temp < 0.0)
+        assert(temp > 0.0)
         temperature -= temp
         setTemperature()
     }
@@ -318,6 +389,7 @@ class BoardAdapter(private val recyclerWidth: Int) : RecyclerView.Adapter<BoardA
             val imageId = when (tileData.type) {
                 "land" -> R.drawable.tile_land
                 "water" -> R.drawable.tile_water
+                "ice" -> R.drawable.tile_ice
                 else -> throw Error("${tileData.type} is not allowed.")
             }
             val layoutParams = binding.imgTileItem.layoutParams
@@ -329,10 +401,10 @@ class BoardAdapter(private val recyclerWidth: Int) : RecyclerView.Adapter<BoardA
     }
 }
 
-fun getScreenWidth(context: Context): Int {
+fun getScreenSize(context: Context): Size {
     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
         val metrics: WindowMetrics = context.getSystemService(WindowManager::class.java).currentWindowMetrics
-        return metrics.bounds.width()
+        return Size(metrics.bounds.width(), metrics.bounds.height())
     }
     else {
         @Suppress("DEPRECATION")
@@ -345,6 +417,6 @@ fun getScreenWidth(context: Context): Int {
         } else {
             Resources.getSystem().displayMetrics
         }
-        return metrics.widthPixels
+        return Size(metrics.widthPixels, metrics.heightPixels)
     }
 }

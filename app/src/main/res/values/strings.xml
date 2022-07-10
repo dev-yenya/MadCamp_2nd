@@ -6,7 +6,19 @@
     <string name="saved_no_levels">다운로드 받은 레벨이 없습니다.\n스토어에서 레벨을 검색해보세요.</string>
     <string name="saved_levels_title">저장된 레벨 목록</string>
     <string name="online_levels_title">온라인 레벨 목록</string>
+    <string name="online_levels_page">%1$d페이지</string>
     <string name="online_levels_load_failed">레벨 목록을 불러오지 못했습니다.</string>
     <string name="view_online_levels_play">플레이</string>
     <string name="level_play_temperature_display">%1$s°C</string>
+    <string name="level_complete_title">레벨 완료!</string>
+    <string name="level_complete_ok">확인</string>
+    <string name="level_complete_stat1_title">온도</string>
+    <string name="create_setup_board_size">보드 크기 설정</string>
+    <string name="create_setup_size_default">7</string>
+    <string name="create_level_back">뒤로가기</string>
+    <string name="create_level_init_temp">시작 온도</string>
+    <string name="create_level_target_temp">목표 온도</string>
+    <string name="create_level_test">테스트하기</string>
+    <string name="create_level_upload">업로드하기</string>
+
 </resources>
