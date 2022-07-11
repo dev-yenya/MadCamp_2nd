@@ -22,24 +22,25 @@
 
     <android.widget.Button
         android:id="@+id/btn_back_confirm"
-        android:text="@string/back_warning_back"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintHorizontal_bias="0.25"
         android:layout_marginTop="10dp"
+        android:text="@string/back_warning_back"
+        android:textColor="@color/red"
+        android:background="@drawable/round_button"
         android:textSize="20sp"
-        android:textColor="@color/black"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_back_resume"
+        app:layout_constraintHorizontal_bias="0.554"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
 
     <android.widget.Button
         android:id="@+id/btn_back_resume"
         android:text="@string/back_warning_resume"
-        android:layout_width="wrap_content"
+        android:background="@drawable/round_button"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,7 +50,7 @@
         app:layout_constraintHorizontal_bias="0.75"
         android:layout_marginTop="10dp"
         android:textSize="20sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,8 +19,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginHorizontal="10dp"
+            android:layout_marginHorizontal="5dp"
             android:text="@string/create_level_back"
+            android:background="@drawable/round_button"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
             />
 
         <android.widget.Button
@@ -30,6 +33,9 @@
             android:layout_weight="1"
             android:layout_marginHorizontal="10dp"
             android:text="@string/create_level_upload"
+            android:textColor="@color/white"
+            android:background="@drawable/round_button"
+            android:layout_marginTop="10dp"
             />
 
         <android.widget.Button
@@ -39,6 +45,9 @@
             android:layout_weight="1"
             android:layout_marginHorizontal="10dp"
             android:text="@string/create_level_test"
+            android:background="@drawable/round_button"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
             />
     </LinearLayout>
 
@@ -74,11 +83,15 @@
 
         <android.widget.Button
             android:id="@+id/btn_init_temp"
+            android:background="@drawable/round_button"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:textColor="@color/white"
             android:text="@string/create_level_init_temp"
             android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginHorizontal="10dp"
             />
 
     </LinearLayout>
@@ -128,13 +141,14 @@
         android:id="@+id/recycler_board"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearlayout_3"
-        app:layout_constraintBottom_toTopOf="@id/recycler_tiles"
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
-        >
+        app:layout_constraintBottom_toTopOf="@id/recycler_tiles"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearlayout_2"
+        app:layout_constraintVertical_bias="0.278">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -164,11 +178,12 @@
         android:id="@+id/recycler_tiles"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@id/recycler_items"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.75"
         app:layout_constraintHeight_percent="0.0833"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.75">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -176,11 +191,11 @@
         android:id="@+id/recycler_items"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.75"
         app:layout_constraintHeight_percent="0.0833"
-        >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.75">
 
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -189,26 +204,28 @@
         android:id="@+id/imgbtn_delete"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/red"
+        android:scaleType="fitXY"
+        android:src="@drawable/trash_can"
         app:layout_constraintBottom_toTopOf="@id/imgbtn_start"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_percent="0.0833"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/red"
-        android:src="@drawable/trash_can"
-        android:scaleType="fitXY"
-        />
+        app:layout_constraintHeight_percent="0.0833" />
 
     <ImageButton
         android:id="@+id/imgbtn_start"
-        android:layout_height="0dp"
         android:layout_width="0dp"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHeight_percent="0.0833"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/transparent"
-        android:src="@drawable/main_character"
         android:scaleType="fitXY"
-        />
+        android:src="@drawable/main_character"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.0833" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
