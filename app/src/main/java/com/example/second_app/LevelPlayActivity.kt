@@ -209,7 +209,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
         var timer = 0
         timerTask?.cancel()
 
-        Toast.makeText(this, "5초간 매우 차가워집니다!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "5초간 시간이 멈춥니다!!", Toast.LENGTH_SHORT).show()
 
         val digit1 = binding.tvLevelPlayTimeSecond.text.toString().toInt()
         val digit2 = binding.tvLevelPlayTimeSecondPer100.text.toString().substring(1).toInt()
