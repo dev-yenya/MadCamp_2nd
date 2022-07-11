@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.second_app.databinding.ActivityViewOnlineLevelBinding
 import com.google.gson.Gson
@@ -23,11 +25,20 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
     private val job = Job()
     override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
 
+    private lateinit var levelLauncher: ActivityResultLauncher<Intent>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         _binding = ActivityViewOnlineLevelBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_FIRST_USER) {
+                // TODO: 결과 해석을 어떻게 할 것인가?
+                Log.d("LEVEL", "complete.")
+            }
+        }
 
         val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
         binding.textViewOnlineLevelTitle.text = levelMetadata.levelname
@@ -39,9 +50,7 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
             intent.putExtra("level_metadata", levelMetadata)
             intent.putExtra("is_base_level", false)
 
-            // TODO: 다른 액티비티에서 레벨을 플레이하고 그 결과를 받아와야 한다.
-            // registerForActivityResult 를 사용하자.
-            startActivity(intent)
+            levelLauncher.launch(intent)
         }
 
         binding.imgbtnViewOnlineLevelBack.setOnClickListener {
@@ -65,7 +74,6 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
                 // 파일을 생성하고, 요청을 보내고, 서버가 보낸 값을 파일에 저장하자.
                 val file = File(filesDir, name)
                 file.createNewFile()
-//                val levelData = httpRequest.requestLevel("GET", "/levels/${metadata.id}", CoroutineScope(coroutineContext))
                 val levelData = httpRequest.requestGeneral<LevelData>("GET", "/levels/${metadata.id}", "", CoroutineScope(coroutineContext))
 
                 if (levelData != null) {

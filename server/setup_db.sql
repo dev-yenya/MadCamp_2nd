@@ -3,14 +3,15 @@ create database week2;
 use week2;
 
 create table users(
-    id varchar(40),
+    id varchar(56),
     rating int,
-    username varchar(20),
+    username varchar(20) character set utf8 collate utf8_general_ci,
     primary key(id)
 );
+
 create table levels(
-    id int,
-    levelname varchar(32),
+    id int auto_increment,
+    levelname varchar(32) character set utf8 collate utf8_general_ci,
     boardsize smallint,
     -- authorid int,
     primary key(id)
@@ -20,9 +21,7 @@ create table completedlevels(
     levelid int
 );
 -- Insert examples.
-insert into users(id, rating, username) values (0, 100000000, "admin");
 insert into levels(id, levelname, boardsize) values 
-(1954, "Test Level", 5),
-(2000, "Two Thousand", 2),
-(9999, "Goo goo goo", 9),
-(17039, "ID over", 201);
+(0, "Test Level", 5);
+
+insert into users(id, rating, username) values ("123515132521341", 15000, "김성혁");
