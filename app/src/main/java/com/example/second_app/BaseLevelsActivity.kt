@@ -33,6 +33,10 @@ class BaseLevelsActivity: AppCompatActivity() {
         _binding = ActivityBaseLevelsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.imgbtnBaseLevelsBack.setOnClickListener{
+            if(isFinishing) finish()
+        }
+
         levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_FIRST_USER) {
                 // TODO: 결과 해석?
@@ -48,8 +52,6 @@ class BaseLevelsActivity: AppCompatActivity() {
         val recyclerView = binding.recyclerViewBaseLevels
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-
-
 
 
     }

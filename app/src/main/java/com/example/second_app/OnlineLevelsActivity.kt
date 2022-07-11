@@ -102,10 +102,9 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
 
             binding.textOnlineLevelsPage.text = String.format(resources.getString(R.string.online_levels_page), currentPage + 1)
             adapter.notifyDataSetChanged()
-
-            binding.imgbtnOnlineLevelsBack.setOnClickListener {
-                if (!isFinishing) finish()
-            }
+        }
+        binding.imgbtnOnlineLevelsBack.setOnClickListener {
+            if (!isFinishing) finish()
         }
     }
 
@@ -191,6 +190,7 @@ class OnlineLevelsAdapter : RecyclerView.Adapter<OnlineLevelsAdapter.MyViewHolde
     inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(levelMetadata: LevelInformation) {
             binding.btnLevelListItem.text = levelMetadata.levelname
+            binding.tvLevelListNickname.text = levelMetadata.username
             val context = binding.btnLevelListItem.context
             binding.btnLevelListItem.setOnClickListener {
                 val intent = Intent(context, ViewOnlineLevelActivity::class.java)
