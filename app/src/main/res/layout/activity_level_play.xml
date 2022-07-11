@@ -113,7 +113,9 @@
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"
             tools:layout_editor_absoluteX="61dp"
-            tools:layout_editor_absoluteY="0dp"></androidx.recyclerview.widget.RecyclerView>
+            tools:layout_editor_absoluteY="0dp">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <ImageView
             android:id="@+id/board_goal"
@@ -133,66 +135,68 @@
             android:src="@drawable/main_character"
             />
 
-        <TextView
-            android:id="@+id/text_level_play_temperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:text="temp"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints" />
-
-        <ProgressBar
-            android:id="@+id/progressBar_level_play_temperature"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            android:paddingTop="270dp"
-            android:progress="0"
-            android:progressTint="@color/red"
-            android:rotation="270"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/text_level_play_temperature"
-            app:layout_constraintVertical_bias="0.793" />
-
-        <ProgressBar
-            android:id="@+id/progressBar_level_play_time"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="300dp"
-            android:layout_height="11dp"
-            android:layout_marginBottom="8dp"
-            android:progressTint="@color/green"
-            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_level_play_board"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/recycler_view_level_play_board"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_level_play_time_second"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:background="@color/white"
-            android:text="00"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_level_play_board"
-            app:layout_constraintEnd_toEndOf="@+id/recycler_view_level_play_board"
-            app:layout_constraintStart_toEndOf="@+id/progressBar_level_play_time" />
-
-        <TextView
-            android:id="@+id/tv_level_play_time_second_per_100"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":00"
-            android:textColor="@color/black"
-            android:background="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_level_play_board"
-            app:layout_constraintStart_toEndOf="@+id/tv_level_play_time_second" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/text_level_play_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="temp"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/inner_constraint"
+        app:layout_constraintBottom_toTopOf="@id/inner_constraint"
+        tools:ignore="MissingConstraints"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBar_level_play_time"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="11dp"
+        android:layout_marginBottom="8dp"
+        android:progressTint="@color/green"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintTop_toBottomOf="@id/inner_constraint"
+        app:layout_constraintEnd_toEndOf="@id/inner_constraint"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/inner_constraint"
+        />
+
+    <TextView
+        android:id="@+id/tv_level_play_time_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="00"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/inner_constraint"
+        app:layout_constraintEnd_toStartOf="@id/tv_level_play_time_second_per_100"
+        />
+
+    <TextView
+        android:id="@+id/tv_level_play_time_second_per_100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":00"
+        android:textColor="@color/black"
+        android:background="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/inner_constraint"
+        app:layout_constraintEnd_toEndOf="@id/inner_constraint" />
+
+    <ProgressBar
+        android:id="@+id/progressBar_level_play_temperature"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:progress="0"
+        android:progressTint="@color/red"
+        android:rotation="270"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintStart_toStartOf="@id/inner_constraint"
+        app:layout_constraintTop_toTopOf="@id/inner_constraint"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,6 +70,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
 
         val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
         val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
+        val testMode = intent.extras!!.getBoolean("test_mode")
         val levelData = readLevelData(levelMetadata.id, isBaseLevel)
 
         sharedManager = SharedManager(this)
@@ -84,7 +85,9 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                 val intent = Intent()
                 intent.putExtra("temperature_score", temperature)
 
-                updateUserInfo(levelData)
+                if (!testMode) {
+                    updateUserInfo(levelData)
+                }
 
                 // PUT RESULT
                 setResult(RESULT_FIRST_USER, intent)
@@ -133,6 +136,8 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
 
         // 아이템의 위치 설정
         val parentLayout = binding.innerConstraint
+
+        setProgressBar(screenWidth)
 
         for (item in items) {
             val cSet = ConstraintSet()
@@ -196,6 +201,25 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     override fun onDestroy() {
         job.cancel()
         super.onDestroy()
+    }
+
+    private fun setProgressBar(width: Int) {
+        val parentLayout = binding.root
+        val boardLayout = binding.innerConstraint
+        val cSet = ConstraintSet()
+        val childView = binding.progressBarLevelPlayTemperature
+
+        cSet.clone(parentLayout)
+
+        cSet.connect(
+            childView.id,
+            ConstraintSet.START,
+            boardLayout.id,
+            ConstraintSet.START,
+            width * 7 / 15
+        )
+
+        cSet.applyTo(parentLayout)
     }
 
     // 이 시점에서 levelid.json 파일은 반드시 존재해야 한다.
@@ -442,8 +466,13 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
         val newInfo = UserInformation(userInfo.id, userInfo.rating + levelData.timelimit * 10, userInfo.username)
 
         HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(coroutineContext))
-
+        sharedManager.saveUserInfo(newInfo)
         // TODO: 완료한 레벨을 로컬 DB 또는 서버 DB에 추가.
+    }
+
+    override fun onBackPressed() {
+        timerTask?.cancel()
+        super.onBackPressed()
     }
 }
 

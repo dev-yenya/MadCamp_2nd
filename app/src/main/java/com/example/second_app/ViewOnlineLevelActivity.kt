@@ -49,6 +49,7 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
             val intent = Intent(this, LevelPlayActivity::class.java)
             intent.putExtra("level_metadata", levelMetadata)
             intent.putExtra("is_base_level", false)
+            intent.putExtra("test_mode", false)
 
             levelLauncher.launch(intent)
         }

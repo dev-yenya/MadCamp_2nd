@@ -34,7 +34,7 @@ class BaseLevelsActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         binding.imgbtnBaseLevelsBack.setOnClickListener{
-            if(isFinishing) finish()
+            if(!isFinishing) finish()
         }
 
         levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -106,6 +106,7 @@ class BaseLevelsAdapter(private val levelLauncher: ActivityResultLauncher<Intent
                 val intent = Intent(context, LevelPlayActivity::class.java)
                 intent.putExtra("level_metadata", levelMetadata)
                 intent.putExtra("is_base_level", true)
+                intent.putExtra("test_mode", false)
                 levelLauncher.launch(intent)
             }
         }
