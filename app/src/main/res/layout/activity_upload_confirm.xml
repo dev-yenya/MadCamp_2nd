@@ -47,7 +47,7 @@
 
     <android.widget.Button
         android:id="@+id/btn_upload_level"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:text="@string/create_level_upload"
@@ -56,6 +56,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0.8"
+        android:textColor="@color/white"
+        android:background="@drawable/round_button"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

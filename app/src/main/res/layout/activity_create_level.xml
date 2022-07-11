@@ -19,11 +19,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginHorizontal="5dp"
+            android:layout_marginHorizontal="10dp"
             android:text="@string/create_level_back"
             android:background="@drawable/round_button"
             android:textColor="@color/white"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             />
 
         <android.widget.Button
@@ -35,7 +35,7 @@
             android:text="@string/create_level_upload"
             android:textColor="@color/white"
             android:background="@drawable/round_button"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             />
 
         <android.widget.Button
@@ -47,7 +47,7 @@
             android:text="@string/create_level_test"
             android:background="@drawable/round_button"
             android:textColor="@color/white"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             />
     </LinearLayout>
 
@@ -90,50 +90,22 @@
             android:textColor="@color/white"
             android:text="@string/create_level_init_temp"
             android:gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="5dp"
             android:layout_marginHorizontal="10dp"
+            android:textSize="14sp"
             />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearlayout_3"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.06"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearlayout_2"
-        >
-
-<!--        <TextView-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1"-->
-<!--            android:gravity="center"-->
-<!--            android:text="@string/create_level_target_temp"-->
-<!--            />-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/edit_text_temp_limit"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="2"-->
-<!--            android:textSize="12sp"-->
-<!--            android:hint="@string/create_level_target_temp"-->
-<!--            android:inputType="number"-->
-<!--            android:digits="0123456789."-->
-<!--            android:text="@string/create_level_limit_default"-->
-<!--            />-->
         <android.widget.Button
             android:id="@+id/btn_time_limit"
-            android:layout_height="match_parent"
             android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginVertical="5dp"
             android:layout_weight="1"
-            android:text="@string/create_level_time_limit"
+            android:background="@drawable/round_button"
             android:gravity="center"
-            />
-
+            android:text="@string/create_level_time_limit"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -146,9 +118,10 @@
         app:layout_constraintBottom_toTopOf="@id/recycler_tiles"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearlayout_2"
-        app:layout_constraintVertical_bias="0.278">
+        app:layout_constraintVertical_bias="0.211">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -165,21 +138,21 @@
         android:id="@+id/text_current_selected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/recycler_tiles"
-        app:layout_constraintTop_toBottomOf="@id/recycler_board"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/create_level_not_selected"
-        android:textSize="16sp"
         android:gravity="center"
+        android:text="@string/create_level_not_selected"
         android:textColor="@color/black"
-        />
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@id/recycler_tiles"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_board"
+        app:layout_constraintVertical_bias="0.421" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_tiles"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@id/recycler_items"
         app:layout_constraintHeight_percent="0.0833"
         app:layout_constraintStart_toStartOf="parent"
@@ -187,25 +160,12 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_items"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.0833"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.75">
-
-
-    </androidx.recyclerview.widget.RecyclerView>
-
     <ImageButton
         android:id="@+id/imgbtn_delete"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/red"
         android:scaleType="fitXY"
         android:src="@drawable/trash_can"
@@ -218,8 +178,8 @@
         android:id="@+id/imgbtn_start"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="16dp"
         android:background="@color/transparent"
         android:scaleType="fitXY"
         android:src="@drawable/main_character"
@@ -227,5 +187,16 @@
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.0833" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_items"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.0833"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.75"></androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

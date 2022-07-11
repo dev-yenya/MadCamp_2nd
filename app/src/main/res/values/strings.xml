@@ -39,6 +39,7 @@
     <string name="set_time_limit">제한 시간 설정</string>
     <string name="general_confirm">확인</string>
     <string name="second">초</string>
+    <string name="freeze">FREEZE</string>
 
     <string-array name="seconds">
         <item>10</item>
