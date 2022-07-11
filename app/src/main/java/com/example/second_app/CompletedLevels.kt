@@ -5,5 +5,4 @@ package com.example.second_app
 data class CompletedLevels(
     val id: Int,
 ) {
-
 }
