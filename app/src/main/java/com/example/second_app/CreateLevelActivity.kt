@@ -49,6 +49,7 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
     private lateinit var uploadLauncher: ActivityResultLauncher<Intent>
     private lateinit var backLauncher: ActivityResultLauncher<Intent>
     private lateinit var setTemperatureLauncher: ActivityResultLauncher<Intent>
+    private lateinit var setTimeLimitLauncher: ActivityResultLauncher<Intent>
 
     // 보드 세팅용 코드
     private var boardSize = 0
@@ -77,6 +78,8 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
     // 시작 온도
     private var initTemperature = 20.0
 
+    // 제한 시간
+    private var timeLimit = 30
 
     // 레벨 데이터 오브젝트
     private lateinit var levelData: LevelData
@@ -132,6 +135,15 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
             }
         }
 
+        setTimeLimitLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val newTimeLimit = it.data?.getIntExtra("time_limit", 30)!!
+                Toast.makeText(this, "시간 제한: $newTimeLimit", Toast.LENGTH_SHORT).show()
+                timeLimit = newTimeLimit
+                binding.btnTimeLimit.text = String.format(getString(R.string.create_level_time_limit), timeLimit.toString())
+            }
+        }
+
         val screenSize = getScreenSize(this)
         recyclerWidth = screenSize.width / boardSize
 
@@ -161,9 +173,7 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
 
         // 시작 온도 설정. 우선 20.0도로 보이게 한다.
         binding.btnInitTemp.text = String.format(getString(R.string.create_level_init_temp), "20.0")
-        binding.btnInitTemp.setOnClickListener {
-            // TODO: 버튼을 눌렀을 때, 팝업을 띄워서 온도를 설정할 수 있게 하자.
-        }
+        binding.btnTimeLimit.text = String.format(getString(R.string.create_level_time_limit), "30")
 
         // 시작점 설정.
         setStartPoint(startPoint)
@@ -185,10 +195,18 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
             uploadLauncher.launch(intent)
         }
 
+        // 시작 온도 버튼 기능.
         binding.btnInitTemp.setOnClickListener {
             val intent = Intent(this, SetTemperatureActivity::class.java)
             intent.putExtra("init_temperature", initTemperature)
             setTemperatureLauncher.launch(intent)
+        }
+
+        // 시간 제한 버튼 기능.
+        binding.btnTimeLimit.setOnClickListener {
+            val intent = Intent(this, SetTimeLimitActivity::class.java)
+            intent.putExtra("time_limit", timeLimit)
+            setTimeLimitLauncher.launch(intent)
         }
 
         // 삭제 버튼 기능.
@@ -243,7 +261,8 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
                 tiles = ArrayList(boardAdapter.tileList),
                 startpoint = startPoint,
                 inittemp = initTemperature,
-                items = ArrayList(itemMap.keys)
+                items = ArrayList(itemMap.keys),
+                timelimit = timeLimit
             )
             val levelJsonString = gson.toJson(levelData)
             val fileWriter = FileWriter(file)

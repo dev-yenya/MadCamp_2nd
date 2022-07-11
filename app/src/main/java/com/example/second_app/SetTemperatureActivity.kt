@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
@@ -49,6 +50,13 @@ class SetTemperatureActivity: Activity() {
             }
 
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_OUTSIDE) {
+            return false
+        }
+        return true
     }
 
     override fun onBackPressed() {

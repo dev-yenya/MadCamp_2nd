@@ -49,9 +49,9 @@ class BaseLevelsActivity: AppCompatActivity() {
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-
-
-
+        binding.imgbtnBaseLevelsBack.setOnClickListener {
+            if (!isFinishing) finish()
+        }
     }
 
     private fun readBaseLevels() {

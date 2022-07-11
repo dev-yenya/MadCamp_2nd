@@ -3,14 +3,12 @@ package com.example.second_app
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -36,7 +34,8 @@ class LevelPlayActivity: AppCompatActivity() {
     private var _binding: ActivityLevelPlayBinding? = null
     private val binding get() = _binding!!
     private val gson = Gson()
-    private lateinit var activityLauncher: ActivityResultLauncher<Intent>
+    private lateinit var successLauncher: ActivityResultLauncher<Intent>
+    private lateinit var failedLauncher: ActivityResultLauncher<Intent>
     private lateinit var boardAdapter: BoardAdapter
     private var arrowButtonsEnabled = true
     private var extraButtonsEnabled = true
@@ -56,22 +55,31 @@ class LevelPlayActivity: AppCompatActivity() {
         _binding = ActivityLevelPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
+        val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
+
         // 팝업 액티비티를 실행하여 "temperature_score"를 key로 갖는 점수를 받는다.
         // 그 후 레벨 선택 화면으로 돌아간다.
-        activityLauncher =
+        successLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {
                 // MEMO: 레벨을 클리어할 경우 RESULT_FIRST_USER를 리턴한다.
                 // 클리어하지 못하면 +1을 하는걸로..?
                 val intent = Intent()
                 intent.putExtra("temperature_score", temperature)
+
+                updateUserInfo(isBaseLevel)
+
+                // PUT RESULT
                 setResult(RESULT_FIRST_USER, intent)
                 if (!isFinishing) finish()
             }
 
-
-        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
-        val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
+        // 레벨 클리어에 실패할 경우 실행되는 것
+        failedLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            setResult(RESULT_FIRST_USER + 1, intent)
+            if (!isFinishing) finish()
+        }
 
         binding.textLevelPlayTitle.text = levelMetadata.levelname
 
@@ -324,7 +332,7 @@ class LevelPlayActivity: AppCompatActivity() {
                     "goal" -> {
                         val intent = Intent(this, LevelCompleteActivity::class.java)
                         intent.putExtra("temperature_score", temperature)
-                        activityLauncher.launch(intent)
+                        successLauncher.launch(intent)
                     }
                     "life" -> {
                         dropTemperature(1.0)
@@ -377,6 +385,16 @@ class LevelPlayActivity: AppCompatActivity() {
 
     private fun displayTemperature(): String {
         return String.format("%.1f", temperature)
+    }
+
+    // 유저 정보를 업데이트한다. 로컬 DB를 사용하면 좋을 것.
+    private fun updateUserInfo(isBaseLevel: Boolean) {
+        if (isBaseLevel) {
+
+        }
+        else {
+
+        }
     }
 }
 
