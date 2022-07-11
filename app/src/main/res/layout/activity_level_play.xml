@@ -81,7 +81,7 @@
         android:layout_width="97dp"
         android:layout_height="96dp"
         android:background="@drawable/round_magenta_button"
-        android:text="Extra"
+        android:text="@string/freeze"
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/imgbtn_level_play_down"

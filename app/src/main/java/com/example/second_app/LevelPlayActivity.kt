@@ -9,6 +9,7 @@ import android.util.Log
 import android.util.Size
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -193,7 +194,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
         }
         binding.btnLevelPlayExtra.setOnClickListener {
             handleButtonAvailability(isArrowButton = false)
-
+            freeze()
             handleButtonAvailability(isArrowButton = false)
         }
     }
@@ -201,6 +202,57 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     override fun onDestroy() {
         job.cancel()
         super.onDestroy()
+    }
+
+    // 한번만 사용 가능한 사기 버튼
+    private fun freeze() {
+        var timer = 0
+        timerTask?.cancel()
+
+        Toast.makeText(this, "5초간 매우 차가워집니다!!", Toast.LENGTH_SHORT).show()
+
+        val digit1 = binding.tvLevelPlayTimeSecond.text.toString().toInt()
+        val digit2 = binding.tvLevelPlayTimeSecondPer100.text.toString().substring(1).toInt()
+        var timeLeft = digit1 * 100 + digit2
+
+        binding.btnLevelPlayExtra.isEnabled = false
+        Log.d("FREEZE", "FREEZE START")
+
+        val context = this
+        val anotherTimer = Timer()
+        anotherTimer.schedule(object : TimerTask(){
+            override fun run(){
+                //카운트 값 증가
+                timer++
+
+                //카운트 값이 5가되면 타이머 종료 실시
+                if(timer >= 5){
+                    println("[타이머 종료]")
+                    anotherTimer.cancel()
+                    Log.d("FREEZE", "FREEZE END")
+
+                    timerTask = timer(period = 10) {	// timer() 호출
+                        timeLeft--	// period=10, 0.01초마다 time를 1씩 감소Rp
+                        val sec = timeLeft / 100	// time/100, 나눗셈의 몫 (초 부분)
+                        val milli = timeLeft % 100	// time%100, 나눗셈의 나머지 (밀리초 부분)
+
+                        // UI조작을 위한 메서드
+                        runOnUiThread {
+                            binding.tvLevelPlayTimeSecond.text = "$sec"	// TextView 세팅
+                            binding.tvLevelPlayTimeSecondPer100.text = ":$milli"	// Textview 세팅
+                        }
+                        binding.progressBarLevelPlayTime.progress = timeLeft
+                        if(timeLeft == 0){
+                            timerTask?.cancel()
+
+                            // 실패 창을 띄운다.
+                            val intent = Intent(context, LevelFailActivity::class.java)
+                            failedLauncher.launch(intent)
+                        }
+                    }
+                }
+            }
+        },1000, 1000)
     }
 
     private fun setProgressBar(width: Int) {
