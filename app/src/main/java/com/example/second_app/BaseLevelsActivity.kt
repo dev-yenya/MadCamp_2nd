@@ -49,6 +49,9 @@ class BaseLevelsActivity: AppCompatActivity() {
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+
+
+
     }
 
     private fun readBaseLevels() {

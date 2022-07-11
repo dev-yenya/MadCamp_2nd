@@ -102,6 +102,10 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
 
             binding.textOnlineLevelsPage.text = String.format(resources.getString(R.string.online_levels_page), currentPage + 1)
             adapter.notifyDataSetChanged()
+
+            binding.imgbtnOnlineLevelsBack.setOnClickListener {
+                if (!isFinishing) finish()
+            }
         }
     }
 

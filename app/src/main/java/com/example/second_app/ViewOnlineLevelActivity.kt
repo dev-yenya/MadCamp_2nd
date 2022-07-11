@@ -52,6 +52,10 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
 
             levelLauncher.launch(intent)
         }
+
+        binding.imgbtnViewOnlineLevelBack.setOnClickListener {
+            if (!isFinishing) finish()
+        }
     }
 
     override fun onDestroy() {

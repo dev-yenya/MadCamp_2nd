@@ -4,6 +4,20 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/play_background">
+    <ImageButton
+        android:id="@+id/imgbtn_Create_setup"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintDimensionRatio="1:1"
+        android:scaleType="centerCrop"
+        android:src="@drawable/general_back_arrow"
+        android:background="@color/transparent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        />
 
     <EditText
         android:id="@+id/edit_text_create_setup_size"
@@ -16,10 +30,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.486" />
+        app:layout_constraintVertical_bias="0.468" />
 
     <TextView
         android:id="@+id/text_create_setup_size"

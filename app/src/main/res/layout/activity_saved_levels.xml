@@ -12,19 +12,19 @@
         android:background="@drawable/play_background"
         />
 
+
     <TextView
         android:id="@+id/text_saved_levels_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/recycler_view_saved_levels"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/saved_levels_title"
-        android:textSize="30sp"
         android:textColor="@color/black"
-        />
-
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@id/recycler_view_saved_levels"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.759" />
 
     <TextView
         android:id="@+id/background_middle"
@@ -36,7 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.8"
         app:layout_constraintHeight_percent="0.7"
-        android:background="@color/white"
         />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -80,5 +79,19 @@
         android:textColor="@color/black"
         />
 
+    <ImageButton
+        android:id="@+id/imgbtn_saved_levels_back"
+        android:layout_height="0dp"
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintDimensionRatio="1:1"
+        android:scaleType="centerCrop"
+        android:src="@drawable/general_back_arrow"
+        android:background="@color/transparent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

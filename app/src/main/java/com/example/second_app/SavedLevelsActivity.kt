@@ -47,6 +47,10 @@ class SavedLevelsActivity: AppCompatActivity() {
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        binding.imgbtnSavedLevelsBack.setOnClickListener {
+            if (!isFinishing) finish()
+        }
     }
 }
 
