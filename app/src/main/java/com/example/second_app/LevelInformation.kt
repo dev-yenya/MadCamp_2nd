@@ -10,5 +10,7 @@ data class LevelInformation(
     val id: Int,
     val levelname: String,
     val boardsize: Int,
+    val rating : Int,
+    val username: String
     // 더 추가할 것.
 ): Serializable

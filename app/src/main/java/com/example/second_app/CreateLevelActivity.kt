@@ -56,6 +56,10 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
     private var recyclerWidth = 0
     private lateinit var boardAdapter: BoardCreateAdapter
 
+    //레벨 세팅용 코드
+    private var rating = 0
+    private var username = ""
+
     // 타일/아이템 선택 창을 위한 코드
     private lateinit var tileAdapter: TileAdapter
     private lateinit var itemAdapter: ItemAdapter
@@ -278,7 +282,7 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
 
         // 2-2. 데이터를 준비하고 레벨을 플레이 할 수 있도록 한다.
         val intent = Intent(this, LevelPlayActivity::class.java)
-        val temporaryLevelMetaData = LevelInformation(0, "테스트 레벨", boardSize)
+        val temporaryLevelMetaData = LevelInformation(0, "테스트 레벨", boardSize, rating, username)
         intent.putExtra("level_metadata", temporaryLevelMetaData)
         intent.putExtra("is_base_level", false)
         playTestLauncher.launch(intent)
@@ -290,7 +294,7 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
         // 업로드 확인 등등..
         val httpRequest = HttpRequest()
         val levelPayload = LevelPayload(
-            LevelInformation(0, levelName, boardSize),
+            LevelInformation(0, levelName, boardSize, rating, username),
             levelData
         )
         val result = httpRequest.request("POST", "/levels", gson.toJson(levelPayload), CoroutineScope(coroutineContext))

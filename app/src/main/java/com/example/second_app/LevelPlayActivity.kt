@@ -22,6 +22,8 @@ import com.example.second_app.databinding.TileItemBinding
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.*
+import kotlin.concurrent.timer
 
 object ButtonDirection {
     const val LEFT = 7500
@@ -41,6 +43,7 @@ class LevelPlayActivity: AppCompatActivity() {
     private var extraButtonsEnabled = true
     private var recyclerWidth = 0
     private var boardSize = 0
+    private var timerTask: Timer? = null
 
     // 게임 중의 변수 값
     private var temperature: Double = 0.0
@@ -157,6 +160,9 @@ class LevelPlayActivity: AppCompatActivity() {
         // 그 외 설정.
         temperature = levelData.inittemp
         setTemperature()
+
+        // TODO : 제한시간 동적으로 설정하기
+        setTime(2000)
 
         binding.imgbtnLevelPlayUp.setOnClickListener {
             moveCharacter(ButtonDirection.UP)
@@ -358,6 +364,7 @@ class LevelPlayActivity: AppCompatActivity() {
     }
 
     // 온도 표시 및 수정 함수들.
+
     private fun setTemperature() {
         binding.progressBarLevelPlayTemperature.max=100
         val str = String.format(resources.getString(R.string.level_play_temperature_display), displayTemperature())
@@ -368,6 +375,27 @@ class LevelPlayActivity: AppCompatActivity() {
         }
         binding.textLevelPlayTemperature.text = str
         binding.progressBarLevelPlayTemperature.progress = (temperature*10-200).toInt()
+
+    }
+
+    private fun setTime(maxTime: Int){
+        binding.progressBarLevelPlayTime.max=maxTime
+        var time = maxTime
+        timerTask = kotlin.concurrent.timer(period = 10) {	// timer() 호출
+            time--	// period=10, 0.01초마다 time를 1씩 감소Rp
+            val sec = time / 100	// time/100, 나눗셈의 몫 (초 부분)
+            val milli = time % 100	// time%100, 나눗셈의 나머지 (밀리초 부분)
+
+            // UI조작을 위한 메서드
+            runOnUiThread {
+                binding.tvLevelPlayTimeSecond.text = "$sec"	// TextView 세팅
+                binding.tvLevelPlayTimeSecondPer100.text = ":$milli"	// Textview 세팅
+            }
+            binding.progressBarLevelPlayTime.progress = time
+            if(time == 0){
+                timerTask?.cancel()
+            }
+        }
 
     }
 
