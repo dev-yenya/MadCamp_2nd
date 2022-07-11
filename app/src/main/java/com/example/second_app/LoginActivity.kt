@@ -63,8 +63,25 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                                     "\n이메일: ${user.kakaoAccount?.email}" +
                                     "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
                                     "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
-                            val postBody = gson.toJson(UserInformation(user.id.toString(), 0, user.kakaoAccount?.profile?.nickname.toString()))
-                            httpRequest.request("POST", "/users", postBody, CoroutineScope(coroutineContext))
+
+                            // 유저 정보 요청 방식을 수정해서 이 작업을 할 수 있게 만들자.
+                            // 1. GET /users/id 를 보내 유저 정보가 있는지 확인한다.
+                            // 2. 유저 정보가 있다면 그것을 Preference에 등록한다.
+                            // 3. 유저 정보가 없다면 POST 요청을 보내고, Preference에 등록한다.
+                            val userInfo = httpRequest.requestGeneral<UserInformation>("GET", "/users/${user.id}", "", CoroutineScope(coroutineContext))
+                            val realUserInfo = if (userInfo == null) {
+                                val rInfo = UserInformation(user.id.toString(), 0, user.kakaoAccount?.profile?.nickname.toString())
+                                val postBody = gson.toJson(rInfo)
+                                httpRequest.request("POST", "/users", postBody, CoroutineScope(coroutineContext))
+                                rInfo
+                            }
+                            else {
+                                userInfo
+                            }
+
+                            // MEMO: 이 시점부터 sharedManger를 불러오면 글로벌 변수에 접근할 수 있다.
+                            val sharedManager = SharedManager(this)
+                            sharedManager.saveUserInfo(realUserInfo)
                         }
                     }
                     startActivity(intent)
@@ -100,6 +117,38 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                     }
                 }
                 else {
+                    UserApiClient.instance.me { user, error ->
+                        if (error != null) {
+                            Log.e(TAG, "사용자 정보 요청 실패", error)
+                        }
+                        else if (user != null) {
+                            Log.i(TAG, "사용자 정보 요청 성공" +
+                                    "\n회원번호: ${user.id}" +
+                                    "\n이메일: ${user.kakaoAccount?.email}" +
+                                    "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
+                                    "\n프로필사진: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+
+                            // 유저 정보 요청 방식을 수정해서 이 작업을 할 수 있게 만들자.
+                            // 1. GET /users/id 를 보내 유저 정보가 있는지 확인한다.
+                            // 2. 유저 정보가 있다면 그것을 Preference에 등록한다.
+                            // 3. 유저 정보가 없다면 POST 요청을 보내고, Preference에 등록한다.
+                            val userInfo = httpRequest.requestGeneral<UserInformation>("GET", "/users/${user.id}", "", CoroutineScope(coroutineContext))
+                            val realUserInfo = if (userInfo == null) {
+                                val rInfo = UserInformation(user.id.toString(), 0, user.kakaoAccount?.profile?.nickname.toString())
+                                val postBody = gson.toJson(rInfo)
+                                httpRequest.request("POST", "/users", postBody, CoroutineScope(coroutineContext))
+                                rInfo
+                            }
+                            else {
+                                userInfo
+                            }
+
+                            // MEMO: 이 시점부터 sharedManger를 불러오면 글로벌 변수에 접근할 수 있다.
+                            val sharedManager = SharedManager(this)
+                            sharedManager.saveUserInfo(realUserInfo)
+                        }
+                    }
+
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     finish()
