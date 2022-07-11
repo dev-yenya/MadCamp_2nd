@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -97,12 +98,14 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
 
         // 업로드 버튼 비활성화.
         binding.btnUpload.isEnabled = false
+        binding.btnUpload.setTextColor(ContextCompat.getColor(this, R.color.gray))
 
         // 플레이 테스트가 성공할 경우 업로드 버튼을 활성화한다.
         playTestLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_FIRST_USER) {
                 Toast.makeText(this, "레벨 테스트 성공!", Toast.LENGTH_SHORT).show()
                 binding.btnUpload.isEnabled = true
+                binding.btnUpload.setTextColor(ContextCompat.getColor(this, R.color.green))
             }
             else {
                 // 만약 플레이테스트에 실패한다면, 0.json 파일을 삭제한다.

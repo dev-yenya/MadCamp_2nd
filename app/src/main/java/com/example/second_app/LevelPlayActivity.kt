@@ -20,10 +20,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.second_app.databinding.ActivityLevelPlayBinding
 import com.example.second_app.databinding.TileItemBinding
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
 import kotlin.concurrent.timer
+import kotlin.coroutines.CoroutineContext
 
 object ButtonDirection {
     const val LEFT = 7500
@@ -32,7 +36,7 @@ object ButtonDirection {
     const val DOWN = 7503
 }
 
-class LevelPlayActivity: AppCompatActivity() {
+class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     private var _binding: ActivityLevelPlayBinding? = null
     private val binding get() = _binding!!
     private val gson = Gson()
@@ -44,6 +48,10 @@ class LevelPlayActivity: AppCompatActivity() {
     private var recyclerWidth = 0
     private var boardSize = 0
     private var timerTask: Timer? = null
+    private lateinit var sharedManager: SharedManager
+
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
 
     // 게임 중의 변수 값
     private var temperature: Double = 0.0
@@ -58,8 +66,13 @@ class LevelPlayActivity: AppCompatActivity() {
         _binding = ActivityLevelPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        job = Job()
+
         val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
         val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
+        val levelData = readLevelData(levelMetadata.id, isBaseLevel)
+
+        sharedManager = SharedManager(this)
 
         // 팝업 액티비티를 실행하여 "temperature_score"를 key로 갖는 점수를 받는다.
         // 그 후 레벨 선택 화면으로 돌아간다.
@@ -71,7 +84,7 @@ class LevelPlayActivity: AppCompatActivity() {
                 val intent = Intent()
                 intent.putExtra("temperature_score", temperature)
 
-                updateUserInfo(isBaseLevel)
+                updateUserInfo(levelData)
 
                 // PUT RESULT
                 setResult(RESULT_FIRST_USER, intent)
@@ -86,11 +99,9 @@ class LevelPlayActivity: AppCompatActivity() {
 
         binding.textLevelPlayTitle.text = levelMetadata.levelname
 
-        val levelData = readLevelData(levelMetadata.id, isBaseLevel)
-
         Log.d("LEVEL_PLAY", "ID=${levelMetadata.id}")
 
-        val initLevelData = levelData
+//        val initLevelData = levelData.copy()
 
         items = levelData.items.toMutableList()
 
@@ -123,7 +134,7 @@ class LevelPlayActivity: AppCompatActivity() {
         // 아이템의 위치 설정
         val parentLayout = binding.innerConstraint
 
-        for ((i, item) in items.withIndex()) {
+        for (item in items) {
             val cSet = ConstraintSet()
             val childView = ImageView(this)
             childView.id = View.generateViewId()
@@ -161,8 +172,7 @@ class LevelPlayActivity: AppCompatActivity() {
         temperature = levelData.inittemp
         setTemperature()
 
-        // TODO : 제한시간 동적으로 설정하기
-        setTime(2000)
+        setTime(levelData.timelimit * 100)
 
         binding.imgbtnLevelPlayUp.setOnClickListener {
             moveCharacter(ButtonDirection.UP)
@@ -178,9 +188,14 @@ class LevelPlayActivity: AppCompatActivity() {
         }
         binding.btnLevelPlayExtra.setOnClickListener {
             handleButtonAvailability(isArrowButton = false)
-            dropTemperature(0.5)
+
             handleButtonAvailability(isArrowButton = false)
         }
+    }
+
+    override fun onDestroy() {
+        job.cancel()
+        super.onDestroy()
     }
 
     // 이 시점에서 levelid.json 파일은 반드시 존재해야 한다.
@@ -336,6 +351,7 @@ class LevelPlayActivity: AppCompatActivity() {
             if (posX == item.point.x && posY == item.point.y) {
                 when (item.type) {
                     "goal" -> {
+                        timerTask?.cancel()
                         val intent = Intent(this, LevelCompleteActivity::class.java)
                         intent.putExtra("temperature_score", temperature)
                         successLauncher.launch(intent)
@@ -381,7 +397,8 @@ class LevelPlayActivity: AppCompatActivity() {
     private fun setTime(maxTime: Int){
         binding.progressBarLevelPlayTime.max=maxTime
         var time = maxTime
-        timerTask = kotlin.concurrent.timer(period = 10) {	// timer() 호출
+        val context = this
+        timerTask = timer(period = 10) {	// timer() 호출
             time--	// period=10, 0.01초마다 time를 1씩 감소Rp
             val sec = time / 100	// time/100, 나눗셈의 몫 (초 부분)
             val milli = time % 100	// time%100, 나눗셈의 나머지 (밀리초 부분)
@@ -394,6 +411,10 @@ class LevelPlayActivity: AppCompatActivity() {
             binding.progressBarLevelPlayTime.progress = time
             if(time == 0){
                 timerTask?.cancel()
+
+                // 실패 창을 띄운다.
+                val intent = Intent(context, LevelFailActivity::class.java)
+                failedLauncher.launch(intent)
             }
         }
 
@@ -416,13 +437,13 @@ class LevelPlayActivity: AppCompatActivity() {
     }
 
     // 유저 정보를 업데이트한다. 로컬 DB를 사용하면 좋을 것.
-    private fun updateUserInfo(isBaseLevel: Boolean) {
-        if (isBaseLevel) {
+    private fun updateUserInfo(levelData: LevelData) {
+        val userInfo = sharedManager.getUserInfo()
+        val newInfo = UserInformation(userInfo.id, userInfo.rating + levelData.timelimit * 10, userInfo.username)
 
-        }
-        else {
+        HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(coroutineContext))
 
-        }
+        // TODO: 완료한 레벨을 로컬 DB 또는 서버 DB에 추가.
     }
 }
 
