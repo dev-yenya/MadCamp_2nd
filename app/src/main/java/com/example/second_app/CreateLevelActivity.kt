@@ -288,6 +288,7 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
         val temporaryLevelMetaData = LevelInformation(0, "테스트 레벨", boardSize, rating, username)
         intent.putExtra("level_metadata", temporaryLevelMetaData)
         intent.putExtra("is_base_level", false)
+        intent.putExtra("test_mode", true)
         playTestLauncher.launch(intent)
     }
 
