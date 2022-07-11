@@ -3,6 +3,7 @@ package com.example.second_app
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.Window
 import com.example.second_app.databinding.ActivityBackWarningBinding
 
@@ -28,6 +29,13 @@ class BackWarningActivity: Activity() {
         binding.btnBackResume.setOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_OUTSIDE) {
+            return false
+        }
+        return true
     }
 
     override fun onBackPressed() {

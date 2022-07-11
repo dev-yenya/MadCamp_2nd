@@ -8,6 +8,7 @@ data class LevelData(
     val startpoint: Point,          // 시작점
     val inittemp: Double,           // 시작 온도.
     val items: ArrayList<Item>,     // 아이템 분포
+    val timelimit: Int,
 ): Serializable
 
 data class Tile(

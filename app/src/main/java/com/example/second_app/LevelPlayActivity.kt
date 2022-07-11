@@ -3,14 +3,12 @@ package com.example.second_app
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
-import android.graphics.Color
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
 import android.view.*
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +22,8 @@ import com.example.second_app.databinding.TileItemBinding
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.*
+import kotlin.concurrent.timer
 
 object ButtonDirection {
     const val LEFT = 7500
@@ -36,12 +36,14 @@ class LevelPlayActivity: AppCompatActivity() {
     private var _binding: ActivityLevelPlayBinding? = null
     private val binding get() = _binding!!
     private val gson = Gson()
-    private lateinit var activityLauncher: ActivityResultLauncher<Intent>
+    private lateinit var successLauncher: ActivityResultLauncher<Intent>
+    private lateinit var failedLauncher: ActivityResultLauncher<Intent>
     private lateinit var boardAdapter: BoardAdapter
     private var arrowButtonsEnabled = true
     private var extraButtonsEnabled = true
     private var recyclerWidth = 0
     private var boardSize = 0
+    private var timerTask: Timer? = null
 
     // 게임 중의 변수 값
     private var temperature: Double = 0.0
@@ -56,22 +58,31 @@ class LevelPlayActivity: AppCompatActivity() {
         _binding = ActivityLevelPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
+        val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
+
         // 팝업 액티비티를 실행하여 "temperature_score"를 key로 갖는 점수를 받는다.
         // 그 후 레벨 선택 화면으로 돌아간다.
-        activityLauncher =
+        successLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             {
                 // MEMO: 레벨을 클리어할 경우 RESULT_FIRST_USER를 리턴한다.
                 // 클리어하지 못하면 +1을 하는걸로..?
                 val intent = Intent()
                 intent.putExtra("temperature_score", temperature)
+
+                updateUserInfo(isBaseLevel)
+
+                // PUT RESULT
                 setResult(RESULT_FIRST_USER, intent)
                 if (!isFinishing) finish()
             }
 
-
-        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
-        val isBaseLevel = intent.extras!!.getBoolean("is_base_level")
+        // 레벨 클리어에 실패할 경우 실행되는 것
+        failedLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            setResult(RESULT_FIRST_USER + 1, intent)
+            if (!isFinishing) finish()
+        }
 
         binding.textLevelPlayTitle.text = levelMetadata.levelname
 
@@ -149,6 +160,9 @@ class LevelPlayActivity: AppCompatActivity() {
         // 그 외 설정.
         temperature = levelData.inittemp
         setTemperature()
+
+        // TODO : 제한시간 동적으로 설정하기
+        setTime(2000)
 
         binding.imgbtnLevelPlayUp.setOnClickListener {
             moveCharacter(ButtonDirection.UP)
@@ -324,7 +338,7 @@ class LevelPlayActivity: AppCompatActivity() {
                     "goal" -> {
                         val intent = Intent(this, LevelCompleteActivity::class.java)
                         intent.putExtra("temperature_score", temperature)
-                        activityLauncher.launch(intent)
+                        successLauncher.launch(intent)
                     }
                     "life" -> {
                         dropTemperature(1.0)
@@ -350,6 +364,7 @@ class LevelPlayActivity: AppCompatActivity() {
     }
 
     // 온도 표시 및 수정 함수들.
+
     private fun setTemperature() {
         binding.progressBarLevelPlayTemperature.max=100
         val str = String.format(resources.getString(R.string.level_play_temperature_display), displayTemperature())
@@ -360,6 +375,27 @@ class LevelPlayActivity: AppCompatActivity() {
         }
         binding.textLevelPlayTemperature.text = str
         binding.progressBarLevelPlayTemperature.progress = (temperature*10-200).toInt()
+
+    }
+
+    private fun setTime(maxTime: Int){
+        binding.progressBarLevelPlayTime.max=maxTime
+        var time = maxTime
+        timerTask = kotlin.concurrent.timer(period = 10) {	// timer() 호출
+            time--	// period=10, 0.01초마다 time를 1씩 감소Rp
+            val sec = time / 100	// time/100, 나눗셈의 몫 (초 부분)
+            val milli = time % 100	// time%100, 나눗셈의 나머지 (밀리초 부분)
+
+            // UI조작을 위한 메서드
+            runOnUiThread {
+                binding.tvLevelPlayTimeSecond.text = "$sec"	// TextView 세팅
+                binding.tvLevelPlayTimeSecondPer100.text = ":$milli"	// Textview 세팅
+            }
+            binding.progressBarLevelPlayTime.progress = time
+            if(time == 0){
+                timerTask?.cancel()
+            }
+        }
 
     }
 
@@ -377,6 +413,16 @@ class LevelPlayActivity: AppCompatActivity() {
 
     private fun displayTemperature(): String {
         return String.format("%.1f", temperature)
+    }
+
+    // 유저 정보를 업데이트한다. 로컬 DB를 사용하면 좋을 것.
+    private fun updateUserInfo(isBaseLevel: Boolean) {
+        if (isBaseLevel) {
+
+        }
+        else {
+
+        }
     }
 }
 

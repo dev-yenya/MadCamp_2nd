@@ -56,10 +56,6 @@
             android:theme="@android:style/Theme.Dialog"></activity>
         <activity android:name=".CreateSetupActivity"></activity>
         <activity
-            android:name=".CreateSetupActivity">
-
-        </activity>
-        <activity
             android:name=".UploadConfirmActivity"
             android:theme="@android:style/Theme.Dialog">
 
@@ -71,6 +67,11 @@
         </activity>
         <activity
             android:name=".BackWarningActivity"
+            android:theme="@android:style/Theme.Dialog">
+
+        </activity>
+        <activity
+            android:name=".SetTimeLimitActivity"
             android:theme="@android:style/Theme.Dialog">
 
         </activity>

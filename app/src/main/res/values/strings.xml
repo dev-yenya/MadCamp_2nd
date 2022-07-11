@@ -26,6 +26,7 @@
     <string name="create_level_not_selected">아무것도 선택하지 않음</string>
     <string name="create_level_delete_item">아이템 삭제</string>
     <string name="create_level_start_position">시작 위치 배치</string>
+    <string name="create_level_time_limit">시간 제한: %1$s초</string>
     <string name="upload_confirm_title">레벨 업로드하기</string>
     <string name="upload_confirm_level_name">레벨 이름을 적어주세요</string>
     <string name="upload_confirm_name_hint">1 ~ 16 글자</string>
@@ -34,5 +35,28 @@
     <string name="back_warning_back">그만두기</string>
     <string name="set_temp_hint">온도 입력</string>
     <string name="set_init_temp_title">시작 온도 설정</string>
+    <string name="set_time_limit">제한 시간 설정</string>
     <string name="general_confirm">확인</string>
+    <string name="second">초</string>
+
+    <string-array name="seconds">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>90</item>
+        <item>100</item>
+        <item>110</item>
+        <item>120</item>
+        <item>130</item>
+        <item>140</item>
+        <item>150</item>
+        <item>160</item>
+        <item>170</item>
+        <item>180</item>
+    </string-array>
 </resources>

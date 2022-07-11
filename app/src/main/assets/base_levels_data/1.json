@@ -84,5 +84,6 @@
       "type": "life",
       "point": {"x": 0, "y": 3}
     }
-  ]
+  ],
+  "timelimit": 60
 }
