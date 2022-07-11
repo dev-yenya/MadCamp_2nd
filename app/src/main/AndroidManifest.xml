@@ -72,6 +72,11 @@
             android:name=".CreateSetupActivity">
 
         </activity>
+        <activity
+            android:name=".UploadConfirmActivity"
+            android:theme="@android:style/Theme.Dialog">
+
+        </activity>
     </application>
 
 </manifest>

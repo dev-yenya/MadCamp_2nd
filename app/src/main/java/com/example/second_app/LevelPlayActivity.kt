@@ -115,7 +115,7 @@ class LevelPlayActivity: AppCompatActivity() {
             val cSet = ConstraintSet()
             val childView = ImageView(this)
             childView.id = View.generateViewId()
-            parentLayout.addView(childView, 6)
+            parentLayout.addView(childView, 3)
 
             val childLayoutParams = childView.layoutParams
             childLayoutParams.width = recyclerWidth

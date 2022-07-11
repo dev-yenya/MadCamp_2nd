@@ -2,6 +2,7 @@ package com.example.second_app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,10 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import org.json.JSONException
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
 val typeToName: Map<String, String> = mapOf(
@@ -37,12 +41,14 @@ val typeToName: Map<String, String> = mapOf(
 class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
     private var _binding: ActivityCreateLevelBinding? = null
     private val binding get() = _binding!!
-    private val httpRequest = HttpRequest()
     private val gson = Gson()
 
 
     // 플레이테스트를 위한 런처 준비
     private lateinit var playTestLauncher: ActivityResultLauncher<Intent>
+
+    // 업로드를 위한 런처 준비
+    private lateinit var uploadLauncher: ActivityResultLauncher<Intent>
 
     // 보드 세팅용 코드
     private var boardSize = 0
@@ -64,13 +70,16 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
 
     // 아이템들을 담아놓는 맵
     private val itemMap = mutableMapOf<Item, Int>()
-    private var itemViewIndex = 0
 
     // 시작점
     private var startPoint = Point(0, 0)
 
     // 시작 온도
     private var initTemperature = 20.0
+
+
+    // 레벨 데이터 오브젝트
+    private lateinit var levelData: LevelData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,6 +101,18 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
                 // 만약 플레이테스트에 실패한다면, 0.json 파일을 삭제한다.
                 val file = File(filesDir, "0.json")
                 file.delete()
+            }
+        }
+
+        // 업로드에 성공할 경우 액티비티를 닫는다.
+        uploadLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val levelName = it.data?.getStringExtra("level_name")
+                if (levelName != null && uploadLevel(levelName)) {
+                    Toast.makeText(this, "레벨 업로드 완료!", Toast.LENGTH_SHORT).show()
+                    if (!isFinishing) finish()
+                }
+
             }
         }
 
@@ -146,8 +167,8 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
 
         // 업로드 버튼 기능.
         binding.btnUpload.setOnClickListener {
-            // TODO
-            Toast.makeText(this, "업로드 아직 안됨", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, UploadConfirmActivity::class.java)
+            uploadLauncher.launch(intent)
         }
 
         // 삭제 버튼 기능.
@@ -178,26 +199,69 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
         }
 
         // 1-2. 도착점이 배치되었는가?
-        // TODO
+        var goalExists = false
+        for ((item, _) in itemMap) {
+            if (item.type == "goal") {
+                goalExists = true
+                break
+            }
+        }
+        if (!goalExists) {
+            Toast.makeText(this, "골인 지점을 배치해야 해요!", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         // 2. 실제로 테스트하는 단계.
         // 2-1. 레벨 파일 0.json을 생성하고, 사용자의 내부 저장소에 저장한다.
-        // TODO
+        try {
+            val file = File(filesDir, "0.json")
+            file.delete()
+            file.createNewFile()
+
+            levelData = LevelData(
+                id = 0,
+                tiles = ArrayList(boardAdapter.tileList),
+                startpoint = startPoint,
+                inittemp = initTemperature,
+                items = ArrayList(itemMap.keys)
+            )
+            val levelJsonString = gson.toJson(levelData)
+            val fileWriter = FileWriter(file)
+            fileWriter.append(levelJsonString)
+            fileWriter.flush()
+            fileWriter.close()
+            Log.d("OK", "임시 파일 생성 성공")
+
+        } catch (e: IOException) {
+            Log.d("SAVE_FAILED", "파일 생성 과정에서 오류 발생")
+            return
+        }
 
         // 2-2. 데이터를 준비하고 레벨을 플레이 할 수 있도록 한다.
-//        val intent = Intent(this, LevelPlayActivity::class.java)
-//        val temporaryLevelMetaData = LevelInformation(0, "테스트 레벨", boardSize)
-//        intent.putExtra("level_metadata", temporaryLevelMetaData)
-//        intent.putExtra("is_base_level", false)
-//        playTestLauncher.launch(intent)
+        val intent = Intent(this, LevelPlayActivity::class.java)
+        val temporaryLevelMetaData = LevelInformation(0, "테스트 레벨", boardSize)
+        intent.putExtra("level_metadata", temporaryLevelMetaData)
+        intent.putExtra("is_base_level", false)
+        playTestLauncher.launch(intent)
     }
 
     // 레벨을 업로드하는 함수.
-    private fun uploadLevel() {
+    private fun uploadLevel(levelName: String): Boolean {
         // HTTP 연결
         // 업로드 확인 등등..
-
-        // TODO: 팝업 액티비티를 띄워서 해결해보자.
+        val httpRequest = HttpRequest()
+        val levelPayload = LevelPayload(
+            LevelInformation(0, levelName, boardSize),
+            levelData
+        )
+        val result = httpRequest.request("POST", "/levels", gson.toJson(levelPayload), CoroutineScope(coroutineContext))
+        return if (result == null) {
+            Toast.makeText(this, "레벨을 올리지 못했습니다.", Toast.LENGTH_SHORT).show()
+            false
+        } else {
+            Toast.makeText(this, "레벨 업로드 성공!", Toast.LENGTH_SHORT).show()
+            true
+        }
     }
 
     // 백버튼 무효화

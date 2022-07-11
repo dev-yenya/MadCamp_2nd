@@ -44,3 +44,9 @@ data class Item(
         }
     }
 }
+
+
+data class LevelPayload(
+    val metadata: LevelInformation,
+    val data: LevelData
+): Serializable
