@@ -141,23 +141,58 @@
             android:text="temp"
             android:textColor="@color/black"
             android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="342dp" />
+            tools:ignore="MissingConstraints" />
 
         <ProgressBar
             android:id="@+id/progressBar_level_play_temperature"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="300dp"
             android:layout_height="300dp"
+            android:paddingTop="270dp"
             android:progress="0"
             android:progressTint="@color/red"
             android:rotation="270"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_level_play_temperature"
-            app:layout_constraintVertical_bias="0.771"
-            android:paddingTop="270dp"/>
+            app:layout_constraintVertical_bias="0.793" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_level_play_time"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="300dp"
+            android:layout_height="11dp"
+            android:layout_marginBottom="8dp"
+            android:progressTint="@color/green"
+            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_level_play_board"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/recycler_view_level_play_board"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_level_play_time_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:background="@color/white"
+            android:text="00"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_level_play_board"
+            app:layout_constraintEnd_toEndOf="@+id/recycler_view_level_play_board"
+            app:layout_constraintStart_toEndOf="@+id/progressBar_level_play_time" />
+
+        <TextView
+            android:id="@+id/tv_level_play_time_second_per_100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":00"
+            android:textColor="@color/black"
+            android:background="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/recycler_view_level_play_board"
+            app:layout_constraintStart_toEndOf="@+id/tv_level_play_time_second" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
