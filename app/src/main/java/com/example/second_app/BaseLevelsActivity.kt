@@ -34,7 +34,7 @@ class BaseLevelsActivity: AppCompatActivity() {
         setContentView(binding.root)
 
         binding.imgbtnBaseLevelsBack.setOnClickListener{
-            if(isFinishing) finish()
+            if(!isFinishing) finish()
         }
 
         levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {

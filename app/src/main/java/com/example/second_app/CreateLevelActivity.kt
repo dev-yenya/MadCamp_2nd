@@ -293,6 +293,10 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
 
     // 레벨을 업로드하는 함수.
     private fun uploadLevel(levelName: String): Boolean {
+        // userInfo 들고오기
+        val sharedManager = SharedManager(this)
+        username = sharedManager.getUserInfo().username
+        rating = timeLimit*10
         // HTTP 연결
         // 업로드 확인 등등..
         val httpRequest = HttpRequest()
@@ -312,6 +316,7 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
 
     // 백버튼 무효화
     override fun onBackPressed() {
+        Toast.makeText(this, "뒤로가기 버튼으로 레벨 만들기를 종료할 수 없습니다.", Toast.LENGTH_SHORT).show()
         return
     }
 

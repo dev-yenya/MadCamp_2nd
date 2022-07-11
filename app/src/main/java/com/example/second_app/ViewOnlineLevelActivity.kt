@@ -42,6 +42,9 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
 
         val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
         binding.textViewOnlineLevelTitle.text = levelMetadata.levelname
+        binding.tvRatingViewOnlineLevel.text = levelMetadata.rating.toString()
+        binding.tvBoardSizeOnlineLevel.text = levelMetadata.boardsize.toString()
+        Log.e("levelMetaData : ", levelMetadata.rating.toString()+levelMetadata.rating.toString())
 
         checkUserHasLevel(levelMetadata)
 
