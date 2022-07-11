@@ -44,11 +44,11 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
     private val gson = Gson()
 
 
-    // 플레이테스트를 위한 런처 준비
+    // 각종 런처
     private lateinit var playTestLauncher: ActivityResultLauncher<Intent>
-
-    // 업로드를 위한 런처 준비
     private lateinit var uploadLauncher: ActivityResultLauncher<Intent>
+    private lateinit var backLauncher: ActivityResultLauncher<Intent>
+    private lateinit var setTemperatureLauncher: ActivityResultLauncher<Intent>
 
     // 보드 세팅용 코드
     private var boardSize = 0
@@ -116,12 +116,20 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
             }
         }
 
+        backLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                Toast.makeText(this, "레벨 만들기 취소", Toast.LENGTH_SHORT).show()
+                if (!isFinishing) finish()
+            }
+        }
 
-        // 그만두기 버튼을 누를 경우.
-        binding.btnBack.setOnClickListener {
-            Toast.makeText(this, "테스트 중", Toast.LENGTH_SHORT).show()
-            // TODO: 경고 팝업을 띄워서 맵이 없어진다는 것을 알리자.
-            if (!isFinishing) finish()
+        setTemperatureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_OK) {
+                val newTemp = it.data?.getDoubleExtra("init_temperature", 20.0)!!
+                Toast.makeText(this, "시작 온도: $newTemp", Toast.LENGTH_SHORT).show()
+                initTemperature = newTemp
+                binding.btnInitTemp.text = String.format(getString(R.string.create_level_init_temp), initTemperature.toString())
+            }
         }
 
         val screenSize = getScreenSize(this)
@@ -160,6 +168,12 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
         // 시작점 설정.
         setStartPoint(startPoint)
 
+        // 그만두기 버튼을 누를 경우.
+        binding.btnBack.setOnClickListener {
+            val intent = Intent(this, BackWarningActivity::class.java)
+            backLauncher.launch(intent)
+        }
+
         // 테스트 버튼 기능.
         binding.btnPlayTest.setOnClickListener {
             playTestLevel()
@@ -169,6 +183,12 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
         binding.btnUpload.setOnClickListener {
             val intent = Intent(this, UploadConfirmActivity::class.java)
             uploadLauncher.launch(intent)
+        }
+
+        binding.btnInitTemp.setOnClickListener {
+            val intent = Intent(this, SetTemperatureActivity::class.java)
+            intent.putExtra("init_temperature", initTemperature)
+            setTemperatureLauncher.launch(intent)
         }
 
         // 삭제 버튼 기능.

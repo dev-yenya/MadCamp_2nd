@@ -58,6 +58,8 @@ class OnlineLevelsActivity : AppCompatActivity(), CoroutineScope {
         val str = String.format(resources.getString(R.string.online_levels_page), currentPage + 1)
         binding.textOnlineLevelsPage.text = str
 
+        binding.imgbtnOnlineLevelsPrevPage.isEnabled = false
+
         binding.imgbtnOnlineLevelsPrevPage.setOnClickListener {
             currentPage -= 1
 

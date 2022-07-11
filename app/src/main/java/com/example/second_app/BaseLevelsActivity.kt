@@ -2,8 +2,11 @@ package com.example.second_app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +25,7 @@ class BaseLevelsActivity: AppCompatActivity() {
     private lateinit var baseLevelList: MutableList<LevelInformation>
     private val gson = Gson()
     private lateinit var recyclerViewAdapter: BaseLevelsAdapter
+    private lateinit var levelLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +33,17 @@ class BaseLevelsActivity: AppCompatActivity() {
         _binding = ActivityBaseLevelsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == RESULT_FIRST_USER) {
+                // TODO: 결과 해석?
+                Log.d("LEVEL", "레벨 클리어!")
+            }
+        }
+
         // 내부 저장소의 파일을 불러와 레벨 정보를 읽어오자.
         readBaseLevels()
 
-        recyclerViewAdapter = BaseLevelsAdapter()
+        recyclerViewAdapter = BaseLevelsAdapter(levelLauncher)
         recyclerViewAdapter.dataList = baseLevelList
         val recyclerView = binding.recyclerViewBaseLevels
         recyclerView.adapter = recyclerViewAdapter
@@ -66,7 +77,7 @@ class BaseLevelsActivity: AppCompatActivity() {
     }
 }
 
-class BaseLevelsAdapter : RecyclerView.Adapter<BaseLevelsAdapter.MyViewHolder>(){
+class BaseLevelsAdapter(private val levelLauncher: ActivityResultLauncher<Intent>) : RecyclerView.Adapter<BaseLevelsAdapter.MyViewHolder>(){
     var dataList = mutableListOf<LevelInformation>()
     private var _bb : LevelListItemBinding? = null
     private val binding get() = _bb!!
@@ -74,7 +85,7 @@ class BaseLevelsAdapter : RecyclerView.Adapter<BaseLevelsAdapter.MyViewHolder>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         _bb = LevelListItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         val binding = binding
-        return MyViewHolder(binding)
+        return MyViewHolder(binding, levelLauncher)
     }
 
     override fun getItemCount(): Int = dataList.size
@@ -82,7 +93,7 @@ class BaseLevelsAdapter : RecyclerView.Adapter<BaseLevelsAdapter.MyViewHolder>()
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind(dataList[position])
     }
-    inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(private val binding: LevelListItemBinding, private val levelLauncher: ActivityResultLauncher<Intent>) : RecyclerView.ViewHolder(binding.root) {
         fun bind(levelMetadata: LevelInformation) {
             binding.btnLevelListItem.text = levelMetadata.levelname
             val context = binding.btnLevelListItem.context
@@ -90,7 +101,7 @@ class BaseLevelsAdapter : RecyclerView.Adapter<BaseLevelsAdapter.MyViewHolder>()
                 val intent = Intent(context, LevelPlayActivity::class.java)
                 intent.putExtra("level_metadata", levelMetadata)
                 intent.putExtra("is_base_level", true)
-                context.startActivity(intent)
+                levelLauncher.launch(intent)
             }
         }
     }
