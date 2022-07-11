@@ -137,13 +137,13 @@
             android:id="@+id/text_level_play_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:text="temp"
             android:textColor="@color/black"
-            android:background="@color/white"
             android:textSize="12sp"
-            tools:layout_editor_absoluteX="342dp"
-            tools:layout_editor_absoluteY="0dp"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="342dp" />
 
         <ProgressBar
             android:id="@+id/progressBar_level_play_temperature"

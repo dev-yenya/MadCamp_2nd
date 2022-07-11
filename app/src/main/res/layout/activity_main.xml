@@ -26,35 +26,56 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/background"
             android:scaleType="centerCrop"/>
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal|bottom">
-            <android.widget.Button
-                android:id="@+id/btn_main_base_level"
-                android:layout_width="150dp"
-                android:layout_height="60dp"
-                android:text="Base"
-                android:layout_margin="10dp"
-                android:paddingLeft="20dp"
-                android:textColor="@color/white"
-                android:background="@drawable/round_button"
-                android:drawableLeft="@drawable/base_level_resize"
-                android:layout_marginBottom="100dp"
-                />
-
-            <android.widget.Button
-                android:id="@+id/btn_main_store"
-                android:layout_width="150dp"
-                android:layout_height="60dp"
-                android:layout_margin="10dp"
-                android:background="@drawable/round_button"
-                android:drawableLeft="@drawable/store_resize"
-                android:paddingLeft="20dp"
-                android:text="Store"
-                android:textColor="@color/white" />
-        </LinearLayout>
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal|bottom"
+                android:layout_marginBottom="80dp">
+                <android.widget.Button
+                    android:id="@+id/btn_main_user_rating"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:text="Rating"
+                    android:layout_margin="10dp"
+                    android:paddingLeft="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_button"
+                    android:drawableLeft="@drawable/rate_resize"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal|bottom">
+                <android.widget.Button
+                    android:id="@+id/btn_main_base_level"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:text="Base"
+                    android:layout_margin="10dp"
+                    android:paddingLeft="20dp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/round_button"
+                    android:drawableLeft="@drawable/base_level_resize"
+                    android:layout_marginBottom="100dp"
+                    />
+                <android.widget.Button
+                    android:id="@+id/btn_main_store"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/round_button"
+                    android:drawableLeft="@drawable/store_resize"
+                    android:paddingLeft="20dp"
+                    android:text="Store"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <include
             layout="@layout/appbar"
             android:layout_width="match_parent"

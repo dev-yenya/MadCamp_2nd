@@ -43,6 +43,10 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
             // registerForActivityResult 를 사용하자.
             startActivity(intent)
         }
+
+        binding.imgbtnViewOnlineLevelBack.setOnClickListener {
+            if (!isFinishing) finish()
+        }
     }
 
     override fun onDestroy() {

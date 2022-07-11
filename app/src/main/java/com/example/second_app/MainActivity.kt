@@ -22,17 +22,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-class
-
-MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener ,
-    CoroutineScope {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
     lateinit var navigationView: NavigationView
     lateinit var drawerLayout: DrawerLayout
     private var mBinding : ActivityMainBinding?= null
-    private val httpRequest = HttpRequest()
     private val binding get() = mBinding!!
-    private val job = Job()
-    override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -62,6 +56,11 @@ MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListe
 
         binding.btnMainBaseLevel.setOnClickListener {
             val intent = Intent(this, BaseLevelsActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnMainUserRating.setOnClickListener {
+            val intent = Intent(this, UserRatingActivity::class.java)
             startActivity(intent)
         }
 
