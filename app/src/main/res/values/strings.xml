@@ -15,10 +15,24 @@
     <string name="level_complete_stat1_title">온도</string>
     <string name="create_setup_board_size">보드 크기 설정</string>
     <string name="create_setup_size_default">7</string>
-    <string name="create_level_back">뒤로가기</string>
-    <string name="create_level_init_temp">시작 온도</string>
+    <string name="create_level_back">그만두기</string>
+    <string name="create_level_init_temp">시작 온도: %1$s°C</string>
     <string name="create_level_target_temp">목표 온도</string>
     <string name="create_level_test">테스트하기</string>
     <string name="create_level_upload">업로드하기</string>
-
+    <string name="create_level_init_default">20.0</string>
+    <string name="create_level_limit_default">30.0</string>
+    <string name="create_level_selected_thing">%1$s: %2$s</string>
+    <string name="create_level_not_selected">아무것도 선택하지 않음</string>
+    <string name="create_level_delete_item">아이템 삭제</string>
+    <string name="create_level_start_position">시작 위치 배치</string>
+    <string name="upload_confirm_title">레벨 업로드하기</string>
+    <string name="upload_confirm_level_name">레벨 이름을 적어주세요</string>
+    <string name="upload_confirm_name_hint">1 ~ 16 글자</string>
+    <string name="back_warning_message">주의: 그만두면 만들던 레벨이 사라집니다.\n정말로 그만둘건가요?</string>
+    <string name="back_warning_resume">계속하기</string>
+    <string name="back_warning_back">그만두기</string>
+    <string name="set_temp_hint">온도 입력</string>
+    <string name="set_init_temp_title">시작 온도 설정</string>
+    <string name="general_confirm">확인</string>
 </resources>

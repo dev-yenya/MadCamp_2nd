@@ -72,6 +72,21 @@
             android:name=".CreateSetupActivity">
 
         </activity>
+        <activity
+            android:name=".UploadConfirmActivity"
+            android:theme="@android:style/Theme.Dialog">
+
+        </activity>
+        <activity
+            android:name=".SetTemperatureActivity"
+            android:theme="@android:style/Theme.Dialog">
+
+        </activity>
+        <activity
+            android:name=".BackWarningActivity"
+            android:theme="@android:style/Theme.Dialog">
+
+        </activity>
     </application>
 
 </manifest>
