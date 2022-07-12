@@ -73,6 +73,7 @@ class SavedLevelsAdapter : RecyclerView.Adapter<SavedLevelsAdapter.MyViewHolder>
     inner class MyViewHolder(private val binding: LevelListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(levelMetadata: LevelInformation) {
             binding.btnLevelListItem.text = levelMetadata.levelname
+            binding.tvLevelListNickname.text = levelMetadata.username
             val context = binding.btnLevelListItem.context
             binding.btnLevelListItem.setOnClickListener {
                 val intent = Intent(context, ViewOnlineLevelActivity::class.java)

@@ -2,13 +2,13 @@ package com.example.second_app
 
 import android.content.ContentValues.TAG
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,17 +22,27 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, CoroutineScope {
     lateinit var navigationView: NavigationView
     lateinit var drawerLayout: DrawerLayout
     private var mBinding : ActivityMainBinding?= null
     private val binding get() = mBinding!!
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
+    lateinit var sharedManager: SharedManager
+    override fun onResume() {
+        super.onResume()
+        // put your code here...
+        val header = navigationView.getHeaderView(0)
+        val userRating = header.findViewById<TextView>(R.id.tv_main_rating)
+        userRating.text = "내 경험치 : " + sharedManager.getUserInfo().rating.toString()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        sharedManager = SharedManager(this) // sharedManager 초기화
         val toolbar: Toolbar = findViewById(R.id.toolbar) // toolBar를 통해 App Bar 생성
         setSupportActionBar(toolbar) // 툴바 적용
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // 드로어를 꺼낼 홈 버튼 활성화
@@ -67,6 +77,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val header = navigationView.getHeaderView(0)
         val profileImg = header.findViewById<ImageView>(R.id.iv_main_user)
         val userName = header.findViewById<TextView>(R.id.tv_main_user_name)
+        val userRating = header.findViewById<TextView>(R.id.tv_main_rating)
 
         // 카카오톡 프로필 가져오기
         TalkApiClient.instance.profile { profile, error ->
@@ -78,11 +89,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                             "\n닉네임: ${profile.nickname}" +
                             "\n프로필사진: ${profile.thumbnailUrl}"
                 )
+
                 userName.text = profile.nickname
+                userRating.text = "내 경험치 : " + sharedManager.getUserInfo().rating.toString()
                 Glide.with(this).load(profile.thumbnailUrl).circleCrop().into(profileImg)
             }
         }
     }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // 클릭한 툴바 메뉴 아이템 id 마다 다르게 실행하도록 설정
         when (item!!.itemId) {
