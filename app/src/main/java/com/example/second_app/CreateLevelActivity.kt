@@ -353,6 +353,9 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
     // 타일을 눌렀을 때 이벤트를 처리한다.
     fun onClickTile(tile: Tile) {
         // 현재 어떤 타일/아이템을 선택했느냐에 따라 작업이 바뀐다.
+        binding.btnUpload.isEnabled = false
+        binding.btnUpload.setTextColor(ContextCompat.getColor(this, R.color.gray))
+
         when (currentAction) {
             "land", "water", "ice" -> setTile(tile, currentAction)
             "life", "fire" -> placeItem(tile, currentAction)

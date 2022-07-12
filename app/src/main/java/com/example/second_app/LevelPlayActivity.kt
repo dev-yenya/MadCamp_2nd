@@ -433,6 +433,8 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                 when (item.type) {
                     "goal" -> {
                         timerTask?.cancel()
+                        freezeTimerTask?.cancel()
+                        timerDead = true
                         val intent = Intent(this, LevelCompleteActivity::class.java)
                         intent.putExtra("temperature_score", temperature)
                         successLauncher.launch(intent)

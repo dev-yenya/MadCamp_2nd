@@ -1,32 +1,44 @@
 [
   {
     "id": 1,
-    "levelname": "Level 1",
-    "boardsize": 4
+    "levelname": "레벨 1",
+    "boardsize": 4,
+    "rating": 300,
+    "username": "넙죽이"
   },
   {
     "id": 2,
-    "levelname": "Level 2",
-    "boardsize": 6
+    "levelname": "레벨 2",
+    "boardsize": 6,
+    "rating": 300,
+    "username": "넙죽이"
   },
   {
     "id": 3,
-    "levelname": "Level 350",
-    "boardsize": 6
+    "levelname": "레벨 3",
+    "boardsize": 7,
+    "rating": 300,
+    "username": "넙죽이"
   },
   {
     "id": 4,
-    "levelname": "Good Level",
-    "boardsize": 6
+    "levelname": "레벨 4",
+    "boardsize": 6,
+    "rating": 300,
+    "username": "넙죽이"
   },
   {
     "id": 5,
-    "levelname": "Fine Level",
-    "boardsize": 7
+    "levelname": "레벨 5",
+    "boardsize": 7,
+    "rating": 150,
+    "username": "넙죽이"
   },
   {
     "id": 6,
-    "levelname": "Last Level",
-    "boardsize": 9
+    "levelname": "레벨 6",
+    "boardsize": 10,
+    "rating": 100,
+    "username": "넙죽이"
   }
 ]
