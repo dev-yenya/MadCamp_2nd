@@ -524,7 +524,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
             }
 
             if (prevScore == null) {
-                HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(Dispatchers.Unconfined))
+                HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(Dispatchers.IO))
                 sharedManager.saveUserInfo(newInfo)
 
                 withContext(Dispatchers.IO) {
