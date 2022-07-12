@@ -29,7 +29,7 @@
 
 ### 카카오 로그인
 
-![1](https://user-images.githubusercontent.com/80519883/178488386-ac56200c-22b9-4f35-9923-6d438e94036e.png)
+![1](https://user-images.githubusercontent.com/80519883/178488969-9533d437-c2b2-457a-b880-6413ba056e54.png)
 
 - 사용자의 카카오 계정을 사용해 로그인할 수 있습니다.
     - 이전에 로그인했다면, 자동으로 로그인합니다.
