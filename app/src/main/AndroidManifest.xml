@@ -16,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Second_App">
         <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".UserRatingActivity"
             android:exported="false" />
         <activity
@@ -35,42 +44,30 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true"></activity>
-        <activity android:name=".BaseLevelsActivity"></activity>
-        <activity android:name=".StoreEnterActivity"></activity>
-        <activity android:name=".LevelPlayActivity"></activity>
-        <activity android:name=".CreateLevelActivity"></activity>
-        <activity android:name=".OnlineLevelsActivity"></activity>
-        <activity android:name=".SavedLevelsActivity"></activity>
-        <activity android:name=".ViewOnlineLevelActivity"></activity>
+            android:exported="true" />
+        <activity android:name=".BaseLevelsActivity" />
+        <activity android:name=".StoreEnterActivity" />
+        <activity android:name=".LevelPlayActivity" />
+        <activity android:name=".CreateLevelActivity" />
+        <activity android:name=".OnlineLevelsActivity" />
+        <activity android:name=".SavedLevelsActivity" />
+        <activity android:name=".ViewOnlineLevelActivity" />
         <activity
             android:name=".LevelCompleteActivity"
-            android:theme="@android:style/Theme.Dialog"></activity>
-        <activity android:name=".CreateSetupActivity"></activity>
-
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".CreateSetupActivity" />
         <activity
             android:name=".UploadConfirmActivity"
-            android:theme="@android:style/Theme.Dialog">
-
-        </activity>
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".SetTemperatureActivity"
-            android:theme="@android:style/Theme.Dialog">
-
-        </activity>
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".BackWarningActivity"
-            android:theme="@android:style/Theme.Dialog">
-
-        </activity>
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>
