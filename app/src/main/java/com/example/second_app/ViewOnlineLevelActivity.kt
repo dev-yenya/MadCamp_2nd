@@ -9,11 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.second_app.databinding.ActivityViewOnlineLevelBinding
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import org.json.JSONException
-import java.io.*
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
 class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
@@ -33,14 +33,24 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
         _binding = ActivityViewOnlineLevelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
+        val id = levelMetadata.id
+
+        // 레벨을 클리어한 경우 이 람다식이 실행된다.
         levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_FIRST_USER) {
-                // TODO: 결과 해석을 어떻게 할 것인가?
+                val score = it.data?.getDoubleExtra("temperature_score", 0.0)!!
+
+                // MEMO: LevelPlayActivity에서는 하이스코어만 취급한다.
+
+                // TODO: 하이스코어 업데이트.
+                // (뷰 업데이트 코드)
+
                 Log.d("LEVEL", "complete.")
             }
         }
 
-        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
+
         binding.textViewOnlineLevelTitle.text = levelMetadata.levelname
         binding.tvRatingViewOnlineLevel.text = levelMetadata.rating.toString()
         binding.tvBoardSizeOnlineLevel.text = levelMetadata.boardsize.toString()

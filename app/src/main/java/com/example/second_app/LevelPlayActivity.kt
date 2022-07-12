@@ -21,9 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.second_app.databinding.ActivityLevelPlayBinding
 import com.example.second_app.databinding.TileItemBinding
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
@@ -84,10 +82,10 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                 // MEMO: 레벨을 클리어할 경우 RESULT_FIRST_USER를 리턴한다.
                 // 클리어하지 못하면 +1을 하는걸로..?
                 val intent = Intent()
-                intent.putExtra("temperature_score", temperature)
 
                 if (!testMode) {
-                    updateUserInfo(levelData)
+                    val highscore = updateUserInfo(levelData)
+                    intent.putExtra("temperature_score", highscore)
                 }
 
                 // PUT RESULT
@@ -513,13 +511,37 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     }
 
     // 유저 정보를 업데이트한다. 로컬 DB를 사용하면 좋을 것.
-    private fun updateUserInfo(levelData: LevelData) {
+    private fun updateUserInfo(levelData: LevelData): Double {
         val userInfo = sharedManager.getUserInfo()
         val newInfo = UserInformation(userInfo.id, userInfo.rating + levelData.timelimit * 10, userInfo.username)
 
-        HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(coroutineContext))
-        sharedManager.saveUserInfo(newInfo)
-        // TODO: 완료한 레벨을 로컬 DB 또는 서버 DB에 추가.
+        // MEMO: DB 업데이트는 전부 여기서 처리한다.
+        // 스코어가 있다면 업데이트하고, 없다면 추가한다.
+        val db = CLDB.getInstance(this)!!
+        return runBlocking {
+            val prevScore = withContext(coroutineContext) {
+                db.cldbDao().getScore(levelData.id)
+            }
+
+            if (prevScore == null) {
+                HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(coroutineContext))
+                sharedManager.saveUserInfo(newInfo)
+
+                withContext(coroutineContext) {
+                    db.cldbDao().insert(CompletedLevels(levelData.id, temperature))
+                }
+                temperature
+            }
+            else if (prevScore < temperature) {
+                withContext(coroutineContext) {
+                    db.cldbDao().update(CompletedLevels(levelData.id, prevScore))
+                }
+                prevScore
+            }
+            else {
+                temperature
+            }
+        }
     }
 
     override fun onBackPressed() {
