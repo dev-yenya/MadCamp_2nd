@@ -215,12 +215,12 @@ class CreateLevelActivity: AppCompatActivity(), CoroutineScope {
             intent.putExtra("time_limit", timeLimit)
             setTimeLimitLauncher.launch(intent)
         }
-
+        /*
         // 삭제 버튼 기능.
         binding.imgbtnDelete.setOnClickListener {
             currentAction = "delete"
             showCurrentAction()
-        }
+        }*/
 
         // 시작점 배치 기능.
         binding.imgbtnStart.setOnClickListener {

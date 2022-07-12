@@ -38,7 +38,7 @@
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/drawable/store_resize.xml" value="0.2095" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_back_warning.xml" value="0.176" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_base_levels.xml" value="0.21784420289855072" />
-        <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_create_level.xml" value="0.4" />
+        <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_create_level.xml" value="0.2" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_create_setup.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_level_complete.xml" value="0.264" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_level_fail.xml" value="0.3619791666666667" />
@@ -47,6 +47,7 @@
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_online_levels.xml" value="0.2" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_saved_levels.xml" value="0.4" />
+        <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_splash.xml" value="0.264" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_store_enter.xml" value="0.21784420289855072" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_upload_confirm.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/s1/StudioProjects/MadCamp_2nd/app/src/main/res/layout/activity_user_rating.xml" value="0.3619791666666667" />

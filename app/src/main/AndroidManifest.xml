@@ -16,6 +16,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Second_App">
         <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".UserRatingActivity"
             android:exported="false" />
         <activity
@@ -35,11 +44,6 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
@@ -75,17 +79,12 @@
         <activity android:name=".CreateSetupActivity">
 
         </activity>
-
         <activity
             android:name=".UploadConfirmActivity"
-            android:theme="@android:style/Theme.Dialog">
-
-        </activity>
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".SetTemperatureActivity"
-            android:theme="@android:style/Theme.Dialog">
-
-        </activity>
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".BackWarningActivity"
             android:theme="@android:style/Theme.Dialog">
