@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -47,6 +48,8 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     private var recyclerWidth = 0
     private var boardSize = 0
     private var timerTask: Timer? = null
+    private var freezeTimerTask: Timer? = null
+    private var timerDead = false
     private lateinit var sharedManager: SharedManager
 
     private lateinit var job: Job
@@ -214,6 +217,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
         var timeLeft = digit1 * 100 + digit2
 
         binding.btnLevelPlayExtra.isEnabled = false
+        binding.btnLevelPlayExtra.background = AppCompatResources.getDrawable(this, R.drawable.round_gray_button)
         Log.d("FREEZE", "FREEZE START")
 
         val context = this
@@ -229,7 +233,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                     anotherTimer.cancel()
                     Log.d("FREEZE", "FREEZE END")
 
-                    timerTask = timer(period = 10) {	// timer() 호출
+                    freezeTimerTask = timer(period = 10) {	// timer() 호출
                         timeLeft--	// period=10, 0.01초마다 time를 1씩 감소Rp
                         val sec = timeLeft / 100	// time/100, 나눗셈의 몫 (초 부분)
                         val milli = timeLeft % 100	// time%100, 나눗셈의 나머지 (밀리초 부분)
@@ -242,10 +246,13 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                         binding.progressBarLevelPlayTime.progress = timeLeft
                         if(timeLeft == 0){
                             timerTask?.cancel()
+                            freezeTimerTask?.cancel()
 
-                            // 실패 창을 띄운다.
-                            val intent = Intent(context, LevelFailActivity::class.java)
-                            failedLauncher.launch(intent)
+                            if (!timerDead) {
+                                // 실패 창을 띄운다.
+                                val intent = Intent(context, LevelFailActivity::class.java)
+                                failedLauncher.launch(intent)
+                            }
                         }
                     }
                 }
@@ -485,6 +492,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
             binding.progressBarLevelPlayTime.progress = time
             if(time == 0){
                 timerTask?.cancel()
+                freezeTimerTask?.cancel()
 
                 // 실패 창을 띄운다.
                 val intent = Intent(context, LevelFailActivity::class.java)
@@ -549,6 +557,8 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
 
     override fun onBackPressed() {
         timerTask?.cancel()
+        freezeTimerTask?.cancel()
+        timerDead = true
         super.onBackPressed()
     }
 }
