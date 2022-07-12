@@ -43,21 +43,30 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
 
                 // MEMO: LevelPlayActivity에서는 하이스코어를 intent에 담아서 넘겨준다.
 
-
-                // TODO: 하이스코어 업데이트.
-                // (뷰 업데이트 코드)
                 scoreString = String.format("%.1f", score)
-                Log.d("SCORE", "$scoreString")
                 Log.d("LEVEL", "complete.")
-                binding.tvBestScoreOnlineLevel.text = scoreString+"℃"
+                binding.tvBestScoreOnlineLevel.text = String.format(getString(R.string.view_online_levels_highscore), scoreString)
             }
+        }
+
+        val db = CLDB.getInstance(this)!!
+        val query = runBlocking {
+            withContext(Dispatchers.IO) {
+                db.cldbDao().getScore(id)
+            }
+        }
+        if (query == null) {
+            binding.tvBestScoreOnlineLevel.text = String.format(getString(R.string.view_online_levels_no_score))
+        }
+        else {
+            binding.tvBestScoreOnlineLevel.text = String.format(getString(R.string.view_online_levels_highscore), String.format("%.1f", query))
         }
 
         binding.textViewOnlineLevelTitle.text = levelMetadata.levelname
         binding.tvRatingViewOnlineLevel.text = levelMetadata.rating.toString()
         binding.tvBoardSizeOnlineLevel.text = levelMetadata.boardsize.toString()
 
-        Log.e("levelMetaData : ", levelMetadata.rating.toString()+levelMetadata.rating.toString())
+        Log.e("levelMetaData : ", "${levelMetadata.id}")
 
         checkUserHasLevel(levelMetadata)
 

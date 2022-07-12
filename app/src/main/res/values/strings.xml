@@ -9,6 +9,8 @@
     <string name="online_levels_page">%1$d페이지</string>
     <string name="online_levels_load_failed">레벨 목록을 불러오지 못했습니다.</string>
     <string name="view_online_levels_play">플레이</string>
+    <string name="view_online_levels_highscore">개인 최고 기록: %1$s°C</string>
+    <string name="view_online_levels_no_score">개인 최고 기록 없음</string>
     <string name="level_play_temperature_display">%1$s°C</string>
     <string name="level_complete_title">레벨 완료!</string>
     <string name="level_complete_ok">확인</string>

@@ -84,7 +84,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                 val intent = Intent()
 
                 if (!testMode) {
-                    val highscore = updateUserInfo(levelData)
+                    val highscore = updateUserInfo(levelData, levelMetadata.id)
                     intent.putExtra("temperature_score", highscore)
                 }
 
@@ -511,7 +511,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     }
 
     // 유저 정보를 업데이트한다. 로컬 DB를 사용하면 좋을 것.
-    private fun updateUserInfo(levelData: LevelData): Double {
+    private fun updateUserInfo(levelData: LevelData, levelId: Int): Double {
         val userInfo = sharedManager.getUserInfo()
         val newInfo = UserInformation(userInfo.id, userInfo.rating + levelData.timelimit * 10, userInfo.username)
 
@@ -520,25 +520,28 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
         val db = CLDB.getInstance(this)!!
         return runBlocking {
             val prevScore = withContext(Dispatchers.IO) {
-                db.cldbDao().getScore(levelData.id)
+                db.cldbDao().getScore(levelId)
             }
 
             if (prevScore == null) {
                 HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(Dispatchers.IO))
                 sharedManager.saveUserInfo(newInfo)
 
+                Log.d("LOCAL_DB", "prevScore was null")
                 withContext(Dispatchers.IO) {
-                    db.cldbDao().insert(CompletedLevels(levelData.id, temperature))
+                    db.cldbDao().insert(CompletedLevels(levelId, temperature))
                 }
                 temperature
             }
             else if (prevScore > temperature) {
+                Log.d("LOCAL_DB", "new highscore $temperature")
                 withContext(Dispatchers.IO) {
-                    db.cldbDao().update(CompletedLevels(levelData.id, temperature))
+                    db.cldbDao().update(CompletedLevels(levelId, temperature))
                 }
                 temperature
             }
             else {
+                Log.d("LOCAL_DB", "no new highscore")
                 prevScore
             }
         }
