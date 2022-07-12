@@ -89,6 +89,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
                 }
             }
         }
+        /*
         //로그아웃
         binding.btnLoginLogout.setOnClickListener{
             UserApiClient.instance.logout { error ->
@@ -105,7 +106,7 @@ class LoginActivity : AppCompatActivity(), CoroutineScope {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
-        }
+        }*/
         //자동 로그인
         if (AuthApiClient.instance.hasToken()) {
             UserApiClient.instance.accessTokenInfo { _, error ->
