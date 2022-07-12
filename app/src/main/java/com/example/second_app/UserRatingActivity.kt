@@ -66,6 +66,7 @@ class UserRatingActivity : AppCompatActivity(), CoroutineScope {
 
 class UsersAdapter : RecyclerView.Adapter<UsersAdapter.MyViewHolder>(){
     var dataList = mutableListOf<UserInformation>()
+    var rank = 1
     private var _bb : UserRatingListItemBinding ?= null
     private val binding get() = _bb!!
 
@@ -84,6 +85,8 @@ class UsersAdapter : RecyclerView.Adapter<UsersAdapter.MyViewHolder>(){
     inner class MyViewHolder(private val binding: UserRatingListItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(userMetadata : UserInformation){
             binding.tvUserRatingUsername.text = userMetadata.username
+            binding.tvRatingListRating.text = userMetadata.rating.toString()
+            binding.tvRatingListRank.text = (rank++).toString()
         }
     }
 }

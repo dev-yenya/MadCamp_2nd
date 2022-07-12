@@ -56,6 +56,7 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
         binding.textViewOnlineLevelTitle.text = levelMetadata.levelname
         binding.tvRatingViewOnlineLevel.text = levelMetadata.rating.toString()
         binding.tvBoardSizeOnlineLevel.text = levelMetadata.boardsize.toString()
+        binding.tvTimelimitOnlineLevel.text = (levelMetadata.rating/10).toString()
 
         Log.e("levelMetaData : ", levelMetadata.rating.toString()+levelMetadata.rating.toString())
 
