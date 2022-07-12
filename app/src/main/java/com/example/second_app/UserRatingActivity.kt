@@ -39,6 +39,8 @@ class UserRatingActivity : AppCompatActivity(), CoroutineScope {
         adapter.dataList =  currentDataList
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        // TODO : user rating 연결
+        // TODO : user 등수 계산
 
         binding.imgbtnUserRatingBack.setOnClickListener{
             if (!isFinishing) finish()

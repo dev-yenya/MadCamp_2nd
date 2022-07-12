@@ -9,11 +9,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.second_app.databinding.ActivityViewOnlineLevelBinding
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import org.json.JSONException
-import java.io.*
+import java.io.File
+import java.io.FileWriter
+import java.io.IOException
 import kotlin.coroutines.CoroutineContext
 
 class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
@@ -21,7 +21,7 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
     private val binding get() = _binding!!
     private val httpRequest = HttpRequest()
     private val gson = Gson()
-
+    private var scoreString = ""
     private val job = Job()
     override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
 
@@ -33,18 +33,40 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
         _binding = ActivityViewOnlineLevelBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
+        val id = levelMetadata.id
+
+        // 레벨을 클리어한 경우 이 람다식이 실행된다.
         levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_FIRST_USER) {
-                // TODO: 결과 해석을 어떻게 할 것인가?
+                val score = it.data?.getDoubleExtra("temperature_score", 0.0)!!
+
+                // MEMO: LevelPlayActivity에서는 하이스코어를 intent에 담아서 넘겨준다.
+
+                scoreString = String.format("%.1f", score)
                 Log.d("LEVEL", "complete.")
+                binding.tvBestScoreOnlineLevel.text = String.format(getString(R.string.view_online_levels_highscore), scoreString)
             }
         }
 
-        val levelMetadata = intent.extras!!.getSerializable("level_metadata") as LevelInformation
+        val db = CLDB.getInstance(this)!!
+        val query = runBlocking {
+            withContext(Dispatchers.IO) {
+                db.cldbDao().getScore(id)
+            }
+        }
+        if (query == null) {
+            binding.tvBestScoreOnlineLevel.text = String.format(getString(R.string.view_online_levels_no_score))
+        }
+        else {
+            binding.tvBestScoreOnlineLevel.text = String.format(getString(R.string.view_online_levels_highscore), String.format("%.1f", query))
+        }
+
         binding.textViewOnlineLevelTitle.text = levelMetadata.levelname
         binding.tvRatingViewOnlineLevel.text = levelMetadata.rating.toString()
         binding.tvBoardSizeOnlineLevel.text = levelMetadata.boardsize.toString()
-        Log.e("levelMetaData : ", levelMetadata.rating.toString()+levelMetadata.rating.toString())
+
+        Log.e("levelMetaData : ", "${levelMetadata.id}")
 
         checkUserHasLevel(levelMetadata)
 

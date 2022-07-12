@@ -25,21 +25,22 @@ class SetTimeLimitActivity: Activity() {
         window.attributes.width = (windowSize.width * 0.8).toInt()
         window.attributes.height = (windowSize.height * 0.6).toInt()
 
-        val stringArray = resources.getStringArray(R.array.seconds)
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, stringArray)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerSecond.adapter = adapter
-
-        // 이 액티비티로 올 때는 제한시간을 받는다.
         val currentTimeLimit = intent?.getIntExtra("time_limit", 30)!!
-        binding.spinnerSecond.setSelection((currentTimeLimit / 10) - 1)
+        binding.editTextSecond.setText(currentTimeLimit.toString(), TextView.BufferType.EDITABLE)
 
         binding.btnSetTimeLimit.setOnClickListener {
-            val second = binding.spinnerSecond.selectedItem.toString().toInt()
-            val intent = Intent()
-            intent.putExtra("time_limit", second)
-            setResult(RESULT_OK, intent)
-            if (!isFinishing) finish()
+            val second = binding.editTextSecond.text.toString().toInt()
+
+            if (second < 5 || second > 60) {
+                Toast.makeText(this, "5 ~ 60초만 가능합니다.", Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val intent = Intent()
+                intent.putExtra("time_limit", second)
+                setResult(RESULT_OK, intent)
+                if (!isFinishing) finish()
+            }
+
         }
     }
 

@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="110dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-    <android.widget.Button
+    android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
         android:id="@+id/btn_level_list_item"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginBottom="10dp"
         android:background="@drawable/round_button"
+        android:gravity="center"
         android:text="level"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tv_level_list_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/black"
-        tools:ignore="MissingConstraints"
         android:layout_gravity="right"
-        android:layout_marginRight="20dp"/>
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="12dp"
+        android:text="base"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_level_list_item"
+        app:layout_constraintEnd_toEndOf="@+id/btn_level_list_item"
+        tools:ignore="MissingConstraints" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

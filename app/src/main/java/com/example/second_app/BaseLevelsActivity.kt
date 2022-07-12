@@ -39,7 +39,7 @@ class BaseLevelsActivity: AppCompatActivity() {
 
         levelLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == RESULT_FIRST_USER) {
-                // TODO: 결과 해석?
+                // TODO: 하이스코어를 뷰에 보여줘보자.
                 Log.d("LEVEL", "레벨 클리어!")
             }
         }

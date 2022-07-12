@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/round_gray_button.xml" value="0.1" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/round_magenta_button.xml" value="0.203" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_make_v.xml" value="0.268" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/drawable/store_enter_online_v.xml" value="0.1965" />
@@ -13,6 +14,8 @@
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_level_play.xml" value="0.20878623188405798" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_online_levels.xml" value="0.18645833333333334" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_saved_levels.xml" value="0.18645833333333334" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_set_temperature.xml" value="0.17046605876393112" />
+        <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_set_time_limit.xml" value="0.17046605876393112" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_store_enter.xml" value="0.25" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/activity_view_online_level.xml" value="0.2" />
         <entry key="..\:/Projects/MadCamp_2nd/app/src/main/res/layout/level_list_item.xml" value="0.18645833333333334" />

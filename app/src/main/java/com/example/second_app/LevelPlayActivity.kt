@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -21,9 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.second_app.databinding.ActivityLevelPlayBinding
 import com.example.second_app.databinding.TileItemBinding
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
@@ -49,6 +48,8 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     private var recyclerWidth = 0
     private var boardSize = 0
     private var timerTask: Timer? = null
+    private var freezeTimerTask: Timer? = null
+    private var timerDead = false
     private lateinit var sharedManager: SharedManager
 
     private lateinit var job: Job
@@ -84,10 +85,10 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                 // MEMO: 레벨을 클리어할 경우 RESULT_FIRST_USER를 리턴한다.
                 // 클리어하지 못하면 +1을 하는걸로..?
                 val intent = Intent()
-                intent.putExtra("temperature_score", temperature)
 
                 if (!testMode) {
-                    updateUserInfo(levelData)
+                    val highscore = updateUserInfo(levelData, levelMetadata.id)
+                    intent.putExtra("temperature_score", highscore)
                 }
 
                 // PUT RESULT
@@ -216,6 +217,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
         var timeLeft = digit1 * 100 + digit2
 
         binding.btnLevelPlayExtra.isEnabled = false
+        binding.btnLevelPlayExtra.background = AppCompatResources.getDrawable(this, R.drawable.round_gray_button)
         Log.d("FREEZE", "FREEZE START")
 
         val context = this
@@ -231,7 +233,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                     anotherTimer.cancel()
                     Log.d("FREEZE", "FREEZE END")
 
-                    timerTask = timer(period = 10) {	// timer() 호출
+                    freezeTimerTask = timer(period = 10) {	// timer() 호출
                         timeLeft--	// period=10, 0.01초마다 time를 1씩 감소Rp
                         val sec = timeLeft / 100	// time/100, 나눗셈의 몫 (초 부분)
                         val milli = timeLeft % 100	// time%100, 나눗셈의 나머지 (밀리초 부분)
@@ -244,10 +246,13 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
                         binding.progressBarLevelPlayTime.progress = timeLeft
                         if(timeLeft == 0){
                             timerTask?.cancel()
+                            freezeTimerTask?.cancel()
 
-                            // 실패 창을 띄운다.
-                            val intent = Intent(context, LevelFailActivity::class.java)
-                            failedLauncher.launch(intent)
+                            if (!timerDead) {
+                                // 실패 창을 띄운다.
+                                val intent = Intent(context, LevelFailActivity::class.java)
+                                failedLauncher.launch(intent)
+                            }
                         }
                     }
                 }
@@ -487,6 +492,7 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
             binding.progressBarLevelPlayTime.progress = time
             if(time == 0){
                 timerTask?.cancel()
+                freezeTimerTask?.cancel()
 
                 // 실패 창을 띄운다.
                 val intent = Intent(context, LevelFailActivity::class.java)
@@ -513,17 +519,46 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
     }
 
     // 유저 정보를 업데이트한다. 로컬 DB를 사용하면 좋을 것.
-    private fun updateUserInfo(levelData: LevelData) {
+    private fun updateUserInfo(levelData: LevelData, levelId: Int): Double {
         val userInfo = sharedManager.getUserInfo()
         val newInfo = UserInformation(userInfo.id, userInfo.rating + levelData.timelimit * 10, userInfo.username)
 
-        HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(coroutineContext))
-        sharedManager.saveUserInfo(newInfo)
-        // TODO: 완료한 레벨을 로컬 DB 또는 서버 DB에 추가.
+        // MEMO: DB 업데이트는 전부 여기서 처리한다.
+        // 스코어가 있다면 업데이트하고, 없다면 추가한다.
+        val db = CLDB.getInstance(this)!!
+        return runBlocking {
+            val prevScore = withContext(Dispatchers.IO) {
+                db.cldbDao().getScore(levelId)
+            }
+
+            if (prevScore == null) {
+                HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(Dispatchers.IO))
+                sharedManager.saveUserInfo(newInfo)
+
+                Log.d("LOCAL_DB", "prevScore was null")
+                withContext(Dispatchers.IO) {
+                    db.cldbDao().insert(CompletedLevels(levelId, temperature))
+                }
+                temperature
+            }
+            else if (prevScore > temperature) {
+                Log.d("LOCAL_DB", "new highscore $temperature")
+                withContext(Dispatchers.IO) {
+                    db.cldbDao().update(CompletedLevels(levelId, temperature))
+                }
+                temperature
+            }
+            else {
+                Log.d("LOCAL_DB", "no new highscore")
+                prevScore
+            }
+        }
     }
 
     override fun onBackPressed() {
         timerTask?.cancel()
+        freezeTimerTask?.cancel()
+        timerDead = true
         super.onBackPressed()
     }
 }

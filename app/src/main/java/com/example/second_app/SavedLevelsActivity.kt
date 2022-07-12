@@ -75,9 +75,9 @@ class SavedLevelsAdapter : RecyclerView.Adapter<SavedLevelsAdapter.MyViewHolder>
             binding.btnLevelListItem.text = levelMetadata.levelname
             val context = binding.btnLevelListItem.context
             binding.btnLevelListItem.setOnClickListener {
-                val intent = Intent(context, LevelPlayActivity::class.java)
+                val intent = Intent(context, ViewOnlineLevelActivity::class.java)
                 intent.putExtra("level_metadata", levelMetadata)
-                intent.putExtra("is_base_level", false)
+//                intent.putExtra("is_base_level", false)
                 context.startActivity(intent)
             }
         }
