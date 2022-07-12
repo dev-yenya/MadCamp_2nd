@@ -41,10 +41,13 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
             if (it.resultCode == RESULT_FIRST_USER) {
                 val score = it.data?.getDoubleExtra("temperature_score", 0.0)!!
 
-                // MEMO: LevelPlayActivity에서는 하이스코어만 취급한다.
+                // MEMO: LevelPlayActivity에서는 하이스코어를 intent에 담아서 넘겨준다.
+
 
                 // TODO: 하이스코어 업데이트.
                 // (뷰 업데이트 코드)
+                val scoreString = String.format("%.1f", score)
+                Log.d("SCORE", "$scoreString")
 
                 Log.d("LEVEL", "complete.")
             }

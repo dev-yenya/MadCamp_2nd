@@ -519,27 +519,27 @@ class LevelPlayActivity: AppCompatActivity(), CoroutineScope {
         // 스코어가 있다면 업데이트하고, 없다면 추가한다.
         val db = CLDB.getInstance(this)!!
         return runBlocking {
-            val prevScore = withContext(coroutineContext) {
+            val prevScore = withContext(Dispatchers.IO) {
                 db.cldbDao().getScore(levelData.id)
             }
 
             if (prevScore == null) {
-                HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(coroutineContext))
+                HttpRequest().request("POST", "/users", gson.toJson(newInfo), CoroutineScope(Dispatchers.Unconfined))
                 sharedManager.saveUserInfo(newInfo)
 
-                withContext(coroutineContext) {
+                withContext(Dispatchers.IO) {
                     db.cldbDao().insert(CompletedLevels(levelData.id, temperature))
                 }
                 temperature
             }
-            else if (prevScore < temperature) {
-                withContext(coroutineContext) {
-                    db.cldbDao().update(CompletedLevels(levelData.id, prevScore))
+            else if (prevScore > temperature) {
+                withContext(Dispatchers.IO) {
+                    db.cldbDao().update(CompletedLevels(levelData.id, temperature))
                 }
-                prevScore
+                temperature
             }
             else {
-                temperature
+                prevScore
             }
         }
     }
