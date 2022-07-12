@@ -23,14 +23,14 @@
   {
     "id": 4,
     "levelname": "레벨 4",
-    "boardsize": 6,
+    "boardsize": 8,
     "rating": 300,
     "username": "넙죽이"
   },
   {
     "id": 5,
     "levelname": "레벨 5",
-    "boardsize": 7,
+    "boardsize": 9,
     "rating": 150,
     "username": "넙죽이"
   },
