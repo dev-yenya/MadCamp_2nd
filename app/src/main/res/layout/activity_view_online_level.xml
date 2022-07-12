@@ -38,7 +38,7 @@
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:background="@drawable/round_button"
-        android:text="PLAY"
+        android:text="@string/view_online_levels_play"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

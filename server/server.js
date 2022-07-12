@@ -55,17 +55,19 @@ app.get('/levels/:id', (req,res)=>{
 
 app.post('/levels', (req, res) => {
     let today = new Date();
-    let content = JSON.stringify(req.body.data)
-    let level_name = req.body.metadata.levelname
-    let board_size = req.body.metadata.boardsize
+    let content = JSON.stringify(req.body.data);
+    let level_name = req.body.metadata.levelname;
+    let board_size = req.body.metadata.boardsize;
+    var rating = req.body.metadata.rating;
+    var username = req.body.metadata.username;
     console.log(today.toLocaleTimeString() + `: POST /level`);
-    connection.query('insert into levels(levelname, boardsize) values (?, ?)', [level_name, board_size], (error, rows, fields) => {
+    connection.query('insert into levels(levelname, boardsize, rating, username) values (?, ?, ?, ?)', [level_name, board_size, rating, username], (error, rows, fields) => {
         if (error) {
             console.log('post level: query failed');
             res.status(400).send('bad request');
         }
         else {
-            connection.query('select id from levels where levelname=? and boardsize=? order by id desc limit 1', [level_name, board_size], (error, rows, fields) => {
+            connection.query('select id from levels where levelname=? and boardsize=? and rating=? and username=? order by id desc limit 1', [level_name, board_size, rating, username], (error, rows, fields) => {
                 let id = rows[0].id;
                 fs.writeFile('/root/leveldata/'+id+'.json', content, function(err) 
                 {
@@ -93,7 +95,7 @@ app.get('/rating_list', (req, res)=>{
     var page = req.params.page
     page *=10
     console.log(today.toLocaleTimeString() + `: GET /rating`)
-    connection.query('select * from users order by rating', (error, rows, fields) => {
+    connection.query('select * from users order by rating desc', (error, rows, fields) => {
         if (error) {
             res.status(400).send('bad request');
             console.log("getting rating list failed");
@@ -124,6 +126,28 @@ app.get('/level_list/:page', (req, res)=>{
         }
     });
 });
+
+app.get('/users/:id', (req, res) => {
+    let today = new Date();
+    var id = req.params.id;
+    console.log(today.toLocaleTimeString() + `: GET /users/${id}`);
+    connection.query('select * from users where id=?', [id], (error, rows, fields) => {
+        if (error) {
+            res.status(404).send('Getting user information failed');
+            console.log("FAILED")
+        }
+        else {
+            if (rows.length == 0) {
+                res.status(404).send("");
+                console.log("no entry");
+            }
+            else {
+                res.send(rows[0]);
+                console.log("SUCCEED");
+            }
+        }
+    })
+})
 
 
 // POST /users
@@ -170,9 +194,6 @@ app.post('/users', (req, res) => {
         }
     });
 });
-
-// TODO : level list
-// TODO : level 값
 
 //router 객체를 app 객체에 등록
 app.use('/', router)
