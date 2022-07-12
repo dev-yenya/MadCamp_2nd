@@ -13,6 +13,8 @@ create table levels(
     id int auto_increment,
     levelname varchar(32) character set utf8 collate utf8_general_ci,
     boardsize smallint,
+    rating int,
+    username varchar(32) character set utf8 collate utf8_general_ci,
     -- authorid int,
     primary key(id)
 );
@@ -21,7 +23,7 @@ create table completedlevels(
     levelid int
 );
 -- Insert examples.
-insert into levels(id, levelname, boardsize) values 
-(0, "Test Level", 5);
+insert into levels(id, levelname, boardsize, rating, username) values 
+(256, "example", 5, 200, "넙죽이");
 
-insert into users(id, rating, username) values ("123515132521341", 15000, "김성혁");
+-- insert into users(id, rating, username) values ("123515132521341", 15000, "�??��?��");
