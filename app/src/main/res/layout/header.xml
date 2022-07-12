@@ -23,5 +23,13 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:layout_marginTop="10dp"/>
+    <TextView
+        android:id="@+id/tv_main_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="rating"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>
