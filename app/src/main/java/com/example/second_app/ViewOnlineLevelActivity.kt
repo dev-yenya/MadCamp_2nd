@@ -21,7 +21,7 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
     private val binding get() = _binding!!
     private val httpRequest = HttpRequest()
     private val gson = Gson()
-
+    private var scoreString = ""
     private val job = Job()
     override val coroutineContext: CoroutineContext get() = Dispatchers.IO + job
 
@@ -46,17 +46,17 @@ class ViewOnlineLevelActivity : AppCompatActivity(), CoroutineScope {
 
                 // TODO: 하이스코어 업데이트.
                 // (뷰 업데이트 코드)
-                val scoreString = String.format("%.1f", score)
+                scoreString = String.format("%.1f", score)
                 Log.d("SCORE", "$scoreString")
-
                 Log.d("LEVEL", "complete.")
+                binding.tvBestScoreOnlineLevel.text = scoreString+"℃"
             }
         }
-
 
         binding.textViewOnlineLevelTitle.text = levelMetadata.levelname
         binding.tvRatingViewOnlineLevel.text = levelMetadata.rating.toString()
         binding.tvBoardSizeOnlineLevel.text = levelMetadata.boardsize.toString()
+
         Log.e("levelMetaData : ", levelMetadata.rating.toString()+levelMetadata.rating.toString())
 
         checkUserHasLevel(levelMetadata)
