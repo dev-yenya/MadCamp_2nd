@@ -2,47 +2,56 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="90dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-     <!--<TextView
-        android:id="@+id/tv_user_rating_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:text="Level Name"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_level_list_item"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btn_level_list_item"
-        app:layout_constraintVertical_bias="0.491" />-->
-   <!-- <RatingBar
-        android:id="@+id/ratingBar"
-        android:layout_width="113dp"
-        android:layout_height="14dp"
-        android:layout_marginEnd="52dp"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_level_list_item"
-        app:layout_constraintEnd_toEndOf="@+id/btn_level_list_item"
-        app:layout_constraintTop_toTopOf="@+id/btn_level_list_item"
-        app:layout_constraintVertical_bias="0.454" />-->
 
 
-    <android.widget.Button
+    <TextView
         android:id="@+id/tv_user_rating_username"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/round_button"
-        android:textColor="@color/white"
-        android:textSize="20sp"
+        android:background="@drawable/round_button_white"
+        android:gravity="center"
         android:text="뭐지?"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="1.0" />
 
+    <TextView
+        android:id="@+id/tv_rating_list_rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="12dp"
+        android:text="1st"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.094"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.322"
+        tools:ignore="MissingConstraints" />
 
-
+    <TextView
+        android:id="@+id/tv_rating_list_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="rating"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_user_rating_username"
+        app:layout_constraintEnd_toEndOf="@+id/tv_user_rating_username"
+        app:layout_constraintHorizontal_bias="0.904"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_user_rating_username"
+        app:layout_constraintVertical_bias="0.508"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
